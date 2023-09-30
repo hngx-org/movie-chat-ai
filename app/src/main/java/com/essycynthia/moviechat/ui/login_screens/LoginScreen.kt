@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Column
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,10 +25,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
@@ -41,13 +38,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -70,16 +64,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.essycynthia.moviechat.R
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 
 fun LoginScreen(
-    //navController: NavController
+    navigateToForgot: ()-> Unit,
+    navigateToSignUp:()-> Unit,
+    navigateToChat:()-> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -244,8 +238,7 @@ fun LoginScreen(
                         Text(
                             text = "Forgot password?",
                             modifier = Modifier
-                                //  .clickable { navController.navigate("forgot") }
-
+                                .clickable{navigateToForgot()}
                                 .padding(start = 20.dp),
                             fontSize = 14.sp,
                             color = Color.White,
@@ -255,7 +248,7 @@ fun LoginScreen(
 
                         Spacer(modifier = Modifier.height(10.dp))
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = { navigateToChat() },
 
                             modifier = Modifier
                                 .align(Alignment.End)
@@ -294,7 +287,9 @@ fun LoginScreen(
                             Spacer(modifier = Modifier.width(2.dp))
                             Text(
                                 text = "Sign Up",
-                                modifier = Modifier.padding(top = 15.dp),
+                                modifier = Modifier
+                                    .padding(top = 15.dp)
+                                    .clickable { navigateToSignUp() },
 
 
                                 fontSize = 14.sp,
@@ -376,5 +371,5 @@ fun LoginAnimation() {
 @Preview
 @Composable
 fun MyLogin() {
-    LoginScreen()
+    LoginScreen({},{},{})
 }
