@@ -37,10 +37,10 @@ import com.essycynthia.moviechat.ui.payment_verification_screens.VerificationCol
 enum class NavigationRoutes(val title: String){
     SIGNUP(""),
     LOGIN(""),
-    FORGOT("forgot"),
-    RESET("Reset"),
+    FORGOT("Forgot Password"),
+    RESET("Reset Password"),
     VERIFICATION("Verify your Account"),
-    PAYMENT("Payment"),
+    PAYMENT("Add Payment Method"),
     CHAT_SCREEN("")
 }
 
