@@ -118,6 +118,9 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    //password toggle(Nickyshe)
+    implementation ("androidx.compose.material:material-icons-extended:1.3.1")
 }
 kapt {
     correctErrorTypes = true
