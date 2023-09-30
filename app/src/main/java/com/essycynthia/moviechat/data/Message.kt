@@ -12,9 +12,8 @@ data class Message(
 
 )
 
-val messageDummy = listOf<Message>(
-    Message(text = "Great!", recipientId = "bot", isOut = false),
-    Message(text = "I am Good!", recipientId = "user", isOut = true),
-    Message(text = "Hi,How are you?", recipientId = "bot", isOut = false),
-    Message(text = "Hi", recipientId = "user", isOut = true)
-)
+
+//Message(text = "Great!", recipientId = "bot", isOut = false),
+//Message(text = "I am Good!", recipientId = "user", isOut = true),
+//Message(text = "Hi,How are you?", recipientId = "bot", isOut = false),
+//Message(text = "Hi", recipientId = "user", isOut = true)
