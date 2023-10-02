@@ -12,6 +12,7 @@ import com.essycynthia.moviechat.ui.login_screens.ForgotPasswordScreen
 import com.essycynthia.moviechat.ui.login_screens.LoginScreen
 import com.essycynthia.moviechat.ui.login_screens.ResetPasswordScreen
 import com.essycynthia.moviechat.ui.login_screens.SignUpScreen
+import com.essycynthia.moviechat.ui.navigation.MovieRecommenderApp
 import com.essycynthia.moviechat.ui.theme.MovieChatTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,6 +27,7 @@ class  MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    MovieRecommenderApp()
                  //   ChatScreen()
                   //  SignUpScreen()
                     //LoginScreen()

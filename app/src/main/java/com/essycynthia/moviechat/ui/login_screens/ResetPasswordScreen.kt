@@ -18,7 +18,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -50,11 +49,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.essycynthia.moviechat.R
 
-
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ResetPasswordScreen() {
+fun ResetPasswordScreen(
+    navigateToLogin:()->Unit
+) {
     var passwordVisible by remember { mutableStateOf(false) }
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
@@ -230,7 +230,7 @@ fun ResetPasswordScreen() {
                         Spacer(modifier = Modifier.height(25.dp))
 
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = { navigateToLogin() },
 
                             modifier = Modifier
                                 .align(Alignment.End)
@@ -267,5 +267,5 @@ fun ResetPasswordScreen() {
 @Preview
 @Composable
 fun MyReset() {
-    ResetPasswordScreen()
+    ResetPasswordScreen({})
 }

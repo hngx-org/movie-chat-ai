@@ -4,7 +4,6 @@ package com.essycynthia.moviechat.ui.login_screens
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,14 +45,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.essycynthia.moviechat.R
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(
-    //navController: NavController
+    navigateToResetPassword: () -> Unit
 ) {
     var forgotPasswordEmail by remember { mutableStateOf("") }
 
@@ -158,7 +156,7 @@ fun ForgotPasswordScreen(
                         Spacer(modifier = Modifier.height(28.dp))
 
                         Button(
-                            onClick = { /*TODO*/ },
+                            onClick = { navigateToResetPassword() },
 
                             modifier = Modifier
                                 .align(Alignment.End)
@@ -196,5 +194,5 @@ fun ForgotPasswordScreen(
 @Preview
 @Composable
 fun MyForgot() {
-    ForgotPasswordScreen()
+    ForgotPasswordScreen({})
 }
