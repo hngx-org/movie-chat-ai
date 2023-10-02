@@ -29,10 +29,7 @@ class MovieRepository @Inject constructor(private val movieApi: MovieApi) {
     suspend fun loginUser(loginRequest: LoginRequest): Resource<LoginResponse> {
         return try {
             val response = movieApi.loginUser(loginRequest)
-
             Resource.Success(response)
-
-
         } catch (e: IOException) {
             Resource.Error("Network error")
         } catch (e: HttpException) {
