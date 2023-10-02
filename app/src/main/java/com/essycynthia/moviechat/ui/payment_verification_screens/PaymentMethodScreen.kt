@@ -47,7 +47,9 @@ fun PaymentMethodScreen(){
             modifier = Modifier.padding(horizontal = 30.dp)
         ){
             Card (
-                modifier = Modifier.fillMaxWidth().height(120.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp)
             ){
                 Image(
                     painter = painterResource(id = R.drawable.mastercard_image),
@@ -58,7 +60,8 @@ fun PaymentMethodScreen(){
             OutlinedTextField(
                 value = cardNumber,
                 onValueChange = { cardNumber = it },
-                supportingText = { Text(text = "Card Number")},
+                label = {Text(text = "Card Number")},
+                placeholder = { Text(text = "1234 5678 9101 1123")},
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -69,10 +72,9 @@ fun PaymentMethodScreen(){
             ) {
                 OutlinedTextField(
                     value = date,
-                    onValueChange = {
-                                    if (it.length <= 8) date = it
-                                    },
-                    supportingText = { Text(text = "mm/yyyy")},
+                    onValueChange = { if (it.length <= 8) date = it },
+                    label = {Text(text = "Date")},
+                    placeholder = { Text(text = "11/2000")},
                     modifier = Modifier.weight(0.5F),
                     colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -80,7 +82,8 @@ fun PaymentMethodScreen(){
                 OutlinedTextField(
                     value = ccv,
                     onValueChange = {ccv = it},
-                    supportingText = { Text(text = "ccv")},
+                    label = {Text(text = "CCV")},
+                    placeholder = { Text(text = "123")},
                     modifier = Modifier.weight(0.5F),
                     colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -89,14 +92,16 @@ fun PaymentMethodScreen(){
             OutlinedTextField(
                 value = name,
                 onValueChange = {name = it},
-                supportingText = { Text(text = "Client")},
+                label = {Text(text = "Client")},
+                placeholder = { Text(text = "Franklin Okoli")},
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
             )
             OutlinedTextField(
                 value = postCode,
                 onValueChange = {postCode = it},
-                supportingText = { Text(text = "Postal Address Code")},
+                label = {Text(text = "Postal Code")},
+                placeholder = { Text(text = "01000001")},
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
@@ -105,7 +110,9 @@ fun PaymentMethodScreen(){
                 onClick = { /*TODO*/ },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF209AFD)),
-                modifier = Modifier.fillMaxWidth().height(50.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp),
             ) {
                 Text(text = "Make Payment")
             }
