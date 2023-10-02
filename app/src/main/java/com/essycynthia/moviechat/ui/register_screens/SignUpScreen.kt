@@ -1,4 +1,4 @@
-package com.essycynthia.moviechat.ui.login_screens
+package com.essycynthia.moviechat.ui.register_screens
 
 
 import android.annotation.SuppressLint

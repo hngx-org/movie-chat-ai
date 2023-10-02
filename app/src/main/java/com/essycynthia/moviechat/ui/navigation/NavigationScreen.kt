@@ -30,7 +30,7 @@ import com.essycynthia.moviechat.ui.home_screens.ChatScreen
 import com.essycynthia.moviechat.ui.login_screens.ForgotPasswordScreen
 import com.essycynthia.moviechat.ui.login_screens.LoginScreen
 import com.essycynthia.moviechat.ui.login_screens.ResetPasswordScreen
-import com.essycynthia.moviechat.ui.login_screens.SignUpScreen
+import com.essycynthia.moviechat.ui.register_screens.SignUpScreen
 import com.essycynthia.moviechat.ui.payment_verification_screens.PaymentMethodScreen
 import com.essycynthia.moviechat.ui.payment_verification_screens.VerificationColumn
 
