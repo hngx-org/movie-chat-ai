@@ -64,15 +64,8 @@ fun MovieRecommenderApp(
     val currentScreen = NavigationRoutes.valueOf(backStackEntry?.destination?.route?: NavigationRoutes.SIGNUP.name)
     Scaffold(
         topBar = {
-                 MovieRecommenderTopAppBar(currentScreen = currentScreen) { navController.navigateUp() }
-        },
-        bottomBar = {
-            MovieRecommenderBottomAppBar(
-                currentScreen = currentScreen,
-                navigateToHome = {navController.navigate(NavigationRoutes.CHAT_SCREEN.name)},
-                navigateToPayment = {navController.navigate(NavigationRoutes.PAYMENT.name)},
-                navigateToVerify = {navController.navigate(NavigationRoutes.VERIFICATION.name)}
-            )}
+            MovieRecommenderTopAppBar(currentScreen = currentScreen) { navController.navigateUp() }
+        }
     ) {innerPadding ->
         NavHost(
             navController = navController,
@@ -84,10 +77,10 @@ fun MovieRecommenderApp(
                     navigateToForgot = { navController.navigate(NavigationRoutes.FORGOT.name) },
                     navigateToChat = {navController.navigate(NavigationRoutes.CHAT_SCREEN.name)},
                     navigateToSignUp = {navController.navigate(NavigationRoutes.SIGNUP.name)}
-                    )
+                )
             }
             composable(NavigationRoutes.FORGOT.name){
-                ForgotPasswordScreen(navigateToResetPassword = { navController.navigate(NavigationRoutes.RESET.name) })
+                ForgotPasswordScreen(navigateToVerification = { navController.navigate(NavigationRoutes.VERIFICATION.name) })
             }
             composable(NavigationRoutes.RESET.name){
                 ResetPasswordScreen(
@@ -115,7 +108,7 @@ fun MovieRecommenderApp(
     }
 }
 
-@Composable
+/*@Composable
 fun MovieRecommenderBottomAppBar(
     navigateToHome:()->Unit,
     navigateToPayment:() -> Unit,
@@ -134,7 +127,7 @@ fun MovieRecommenderBottomAppBar(
         }
     }
 
-}
+}*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

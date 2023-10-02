@@ -1,5 +1,6 @@
 package com.essycynthia.moviechat.ui.payment_verification_screens
 
+import android.service.autofill.DateTransformation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.essycynthia.moviechat.R
 
@@ -67,7 +69,9 @@ fun PaymentMethodScreen(){
             ) {
                 OutlinedTextField(
                     value = date,
-                    onValueChange = {date = it},
+                    onValueChange = {
+                                    if (it.length <= 8) date = it
+                                    },
                     supportingText = { Text(text = "mm/yyyy")},
                     modifier = Modifier.weight(0.5F),
                     colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
