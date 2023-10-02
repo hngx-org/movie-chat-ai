@@ -11,10 +11,10 @@ import retrofit2.http.POST
 
 interface MovieApi {
     @POST("/api/auth/register")
-    fun registerUser(@Body request: RegisterRequest): RegisterResponse
+ suspend fun registerUser(@Body request: RegisterRequest): RegisterResponse
 
     @POST("/api/auth/login")
-    fun loginUser(@Body request: LoginRequest): LoginResponse
+ suspend fun loginUser(@Body request: LoginRequest): LoginResponse
 
     @GET("/api/auth/logout")
     suspend fun logoutUser(): LogoutResponse
