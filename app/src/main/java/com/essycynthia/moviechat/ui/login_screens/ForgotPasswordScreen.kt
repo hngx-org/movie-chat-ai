@@ -51,7 +51,7 @@ import com.essycynthia.moviechat.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForgotPasswordScreen(
-    navigateToResetPassword: () -> Unit
+    navigateToVerification: () -> Unit
 ) {
     var forgotPasswordEmail by remember { mutableStateOf("") }
 
@@ -156,7 +156,7 @@ fun ForgotPasswordScreen(
                         Spacer(modifier = Modifier.height(28.dp))
 
                         Button(
-                            onClick = { navigateToResetPassword() },
+                            onClick = { navigateToVerification() },
 
                             modifier = Modifier
                                 .align(Alignment.End)

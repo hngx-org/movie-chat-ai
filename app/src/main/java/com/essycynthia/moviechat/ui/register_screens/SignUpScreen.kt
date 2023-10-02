@@ -66,7 +66,7 @@ import com.essycynthia.moviechat.R
 @Composable
 
 fun SignUpScreen(
-    navigateToVerify:()-> Unit
+    navigateToLogin:()-> Unit
 ) {
     var signUpEmail by remember { mutableStateOf("") }
     var signUpPassword by remember { mutableStateOf("") }
@@ -224,7 +224,7 @@ fun SignUpScreen(
                         Spacer(modifier = Modifier.height(30.dp))
 
                         Button(
-                            onClick = { navigateToVerify() },
+                            onClick = { navigateToLogin() },
 
                             modifier = Modifier
                                 .align(Alignment.End)
