@@ -73,6 +73,7 @@ fun SignUpScreen(
 
     navigateToVerify:()-> Unit,
     viewModel: SignUpScreenViewModel = hiltViewModel(),
+
 ) {
     var signUpEmail by remember { mutableStateOf("") }
     var signUpPassword by remember { mutableStateOf("") }

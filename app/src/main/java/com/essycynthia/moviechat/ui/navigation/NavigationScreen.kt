@@ -33,7 +33,9 @@ import com.essycynthia.moviechat.ui.login_screens.ResetPasswordScreen
 import com.essycynthia.moviechat.ui.register_screens.SignUpScreen
 import com.essycynthia.moviechat.ui.payment_verification_screens.PaymentMethodScreen
 import com.essycynthia.moviechat.ui.payment_verification_screens.VerificationColumn
-
+//enum class is just like a sealed class but returns its name as string when you use the .name function(or variable)
+//it also has the .valueOf("String") function that can be used to select a sub object whose name matches that string. that is what
+//i used in the currentscreen variable
 enum class NavigationRoutes(val title: String){
     SIGNUP(""),
     LOGIN(""),
@@ -60,19 +62,15 @@ enum class NavigationRoutes(val title: String){
 fun MovieRecommenderApp(
     navController: NavHostController = rememberNavController()
 ){
+    //omoo backstack is like the screen that have pilled up as you navigate
     val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentScreen = NavigationRoutes.valueOf(backStackEntry?.destination?.route?: NavigationRoutes.SIGNUP.name)
+    //this one uses the backstack to get the current screen incase its null, it assigns the navigationroute.Login.name as the current screen
+    // i use it to nknow which screen to display the app bar icon or not
+    val currentScreen = NavigationRoutes.valueOf(backStackEntry?.destination?.route?: NavigationRoutes.LOGIN.name)
     Scaffold(
         topBar = {
-                 MovieRecommenderTopAppBar(currentScreen = currentScreen) { navController.navigateUp() }
-        },
-        bottomBar = {
-            MovieRecommenderBottomAppBar(
-                currentScreen = currentScreen,
-                navigateToHome = {navController.navigate(NavigationRoutes.CHAT_SCREEN.name)},
-                navigateToPayment = {navController.navigate(NavigationRoutes.PAYMENT.name)},
-                navigateToVerify = {navController.navigate(NavigationRoutes.VERIFICATION.name)}
-            )}
+            MovieRecommenderTopAppBar(currentScreen = currentScreen) { navController.navigateUp() }
+        }
     ) {innerPadding ->
         NavHost(
             navController = navController,
@@ -84,10 +82,15 @@ fun MovieRecommenderApp(
                     navigateToForgot = { navController.navigate(NavigationRoutes.FORGOT.name) },
                     navigateToChat = {navController.navigate(NavigationRoutes.CHAT_SCREEN.name)},
                     navigateToSignUp = {navController.navigate(NavigationRoutes.SIGNUP.name)}
-                    )
+                )
             }
             composable(NavigationRoutes.FORGOT.name){
-                ForgotPasswordScreen(navigateToResetPassword = { navController.navigate(NavigationRoutes.RESET.name) })
+                ForgotPasswordScreen(navigateToVerification = { navController.navigate(NavigationRoutes.VERIFICATION.name) })
+            }
+            composable(NavigationRoutes.VERIFICATION.name){
+                VerificationColumn(
+                    navigateToReset = {navController.navigate(NavigationRoutes.RESET.name)}
+                )
             }
             composable(NavigationRoutes.RESET.name){
                 ResetPasswordScreen(
@@ -96,12 +99,7 @@ fun MovieRecommenderApp(
             }
             composable(NavigationRoutes.SIGNUP.name){
                 SignUpScreen(
-                    navigateToVerify = {navController.navigate(NavigationRoutes.VERIFICATION.name)}
-                )
-            }
-            composable(NavigationRoutes.VERIFICATION.name){
-                VerificationColumn(
-                    navigateToChat = {navController.navigate(NavigationRoutes.CHAT_SCREEN.name)}
+                    navigateToLogin = {navController.navigate(NavigationRoutes.LOGIN.name)}
                 )
             }
             composable(NavigationRoutes.CHAT_SCREEN.name){
@@ -115,7 +113,7 @@ fun MovieRecommenderApp(
     }
 }
 
-@Composable
+/*@Composable
 fun MovieRecommenderBottomAppBar(
     navigateToHome:()->Unit,
     navigateToPayment:() -> Unit,
@@ -134,7 +132,7 @@ fun MovieRecommenderBottomAppBar(
         }
     }
 
-}
+}*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -147,6 +145,7 @@ fun MovieRecommenderTopAppBar(
             Text(text = currentScreen.title)
         },
         navigationIcon = {
+            //if the current screen is not chatscreen or login screen(the two screens that dont require back button) then display back icon in top app bar
             if (currentScreen != NavigationRoutes.CHAT_SCREEN && currentScreen != NavigationRoutes.LOGIN){
                 IconButton(onClick = navigateUp){
                     Icon(Icons.Default.ArrowBack, contentDescription = null)}
