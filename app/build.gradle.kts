@@ -66,6 +66,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation ("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.compose.material3:material3:1.1.2")
+
 
 
     //Serialization
@@ -97,6 +99,7 @@ dependencies {
     //Dagger-Hilt dependencies
 
     implementation("com.google.dagger:hilt-android:2.46.1")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     kapt("com.google.dagger:hilt-android-compiler:2.46.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
