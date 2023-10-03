@@ -1,5 +1,6 @@
 package com.essycynthia.moviechat.ui.home_screens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -13,24 +14,52 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Info
+import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Send
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.essycynthia.moviechat.R
 import com.essycynthia.moviechat.data.Message
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -43,12 +72,91 @@ val BotChatBubbleShape: Shape = RoundedCornerShape(
     topStart = 48f,
     topEnd = 48f, bottomStart = 0f, bottomEnd = 48f
 )
+data class NavigationItem(
+    val title: String,
+    val selectedIcon: ImageVector,
+    val unselectedIcon: ImageVector
+
+)
 
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen() {
     val simpleDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
     val messageDummy = remember { mutableStateListOf<Message>() }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    var selectedItemIndex by rememberSaveable {
+        mutableStateOf(0)
+    }
+    val items = listOf(
+        NavigationItem(
+            title = "All",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
+        ),
+        NavigationItem(
+            title = "Dark Mode",
+            selectedIcon = Icons.Filled.DarkMode,
+            unselectedIcon = Icons.Outlined.LightMode,
+
+        ),
+        NavigationItem(
+            title = "Settings",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+    )
+
+    ModalNavigationDrawer(drawerContent = { ModalDrawerSheet {
+        Spacer(modifier = Modifier.height(16.dp))
+        items.forEachIndexed { index, item ->
+            NavigationDrawerItem(
+                label = {
+                    Text(text = item.title)
+                },
+                selected = index == selectedItemIndex,
+                onClick = {
+//                                            navController.navigate(item.route)
+                    selectedItemIndex = index
+                    scope.launch {
+                        drawerState.close()
+                    }
+                },
+                icon = {
+                    Icon(
+                        imageVector = if (index == selectedItemIndex) {
+                            item.selectedIcon
+                        } else item.unselectedIcon,
+                        contentDescription = item.title
+                    )
+                },
+
+                modifier = Modifier
+                    .padding(NavigationDrawerItemDefaults.ItemPadding)
+            )
+        }
+    }},
+      drawerState =  drawerState
+  ) {
+        Scaffold {
+            TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) },
+                navigationIcon = {
+                    IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                        Icon(imageVector = Icons.Default.Menu, contentDescription = "Toggle drawer")
+
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { TODO() }) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "Add chat")
+
+                    }
+                })
+        }
+  }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -104,7 +212,7 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
                 Icon(
                     imageVector = Icons.Outlined.Send,
                     contentDescription = "SEND",
-                    tint = Color(0xFF209AFD),
+                    tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.clickable {
                         val userMessage = message.value
                         if (userMessage.isNotBlank()) {
@@ -154,7 +262,7 @@ fun MessageItem(
                 Box(
                     modifier = Modifier
                         .background(
-                            if (isOut) Color(0xFF209AFD) else Color(0xFFF9F6EE),
+                            if (isOut) MaterialTheme.colorScheme.primary else Color(0xFFF9F6EE),
                             shape = if (isOut) AuthorChatBubbleShape else BotChatBubbleShape
                         )
                         .padding(horizontal = 16.dp, vertical = 8.dp)

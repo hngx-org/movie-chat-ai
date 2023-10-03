@@ -7,11 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.essycynthia.moviechat.ui.home_screens.ChatScreen
-import com.essycynthia.moviechat.ui.login_screens.ForgotPasswordScreen
-import com.essycynthia.moviechat.ui.login_screens.LoginScreen
-import com.essycynthia.moviechat.ui.login_screens.ResetPasswordScreen
-import com.essycynthia.moviechat.ui.login_screens.SignUpScreen
 import com.essycynthia.moviechat.ui.navigation.MovieRecommenderApp
 import com.essycynthia.moviechat.ui.theme.MovieChatTheme
 import dagger.hilt.android.AndroidEntryPoint

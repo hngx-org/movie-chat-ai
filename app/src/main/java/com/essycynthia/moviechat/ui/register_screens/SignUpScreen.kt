@@ -1,4 +1,4 @@
-package com.essycynthia.moviechat.ui.login_screens
+package com.essycynthia.moviechat.ui.register_screens
 
 
 import android.annotation.SuppressLint
@@ -10,6 +10,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,10 +27,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -39,6 +42,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,23 +60,35 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.essycynthia.moviechat.R
+import com.essycynthia.moviechat.data.dto.requests.RegisterRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 
 fun SignUpScreen(
-    navigateToVerify:()-> Unit
-) {
+
+    navigateToVerify: () -> Unit,
+    viewModel: SignUpScreenViewModel = hiltViewModel(),
+
+    ) {
     var signUpEmail by remember { mutableStateOf("") }
     var signUpPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    var signUpName by remember { mutableStateOf("") }
+    var sigUpConfirmPassword by remember { mutableStateOf("") }
 
-    Scaffold() {
+    val state = viewModel.userSignUpState.collectAsState()
+
+
+
+    Scaffold(
+
+    ) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize(),
@@ -81,10 +97,15 @@ fun SignUpScreen(
         ) {
             item {
                 SignUpAnimation()
+
             }
 
+
             item {
+
                 Column {
+
+
                     Text(
                         text = "Welcome, Good to see you!!",
                         style = MaterialTheme.typography.bodyMedium,
@@ -102,15 +123,18 @@ fun SignUpScreen(
                 }
 
             }
+            ///check
+
 
             item {
 
 
                 Box(
                     modifier = Modifier
-                        .height(300.dp)
+                        //check
+                        .height(400.dp)
                         .background(
-                            Color(0xFF209AFD),
+                            MaterialTheme.colorScheme.primary,
                             RoundedCornerShape(topStart = 100.dp, bottomEnd = 100.dp)
                         )
                         // .padding(15.dp)
@@ -122,6 +146,48 @@ fun SignUpScreen(
                     ) {
                     Column {
 
+//name
+                        TextField(value = signUpName, onValueChange = {
+                            signUpName = it
+                        },
+                            modifier = Modifier
+                                .padding(start = 20.dp, end = 20.dp, top = 20.dp)
+                                //.fillMaxWidth()
+                                .width(300.dp)
+                                .height(53.dp),
+                            shape = RoundedCornerShape(18.dp),
+                            colors = TextFieldDefaults.textFieldColors(
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                                cursorColor = Color(0xFF209AFD),
+                                containerColor = Color.White
+                            ),
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.ManageAccounts,
+                                    contentDescription = "name",
+                                    modifier = Modifier.size(20.dp)
+                                )
+
+                            },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Text,
+                                imeAction = ImeAction.Done
+                            ),
+                            placeholder = {
+                                Text(
+                                    text = "Enter your Name",
+                                    fontSize = 15.sp,
+                                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                                )
+                            }
+
+
+                        )
+                        ///
+                        Spacer(modifier = Modifier.height(20.dp))
+
+//email
                         TextField(value = signUpEmail, onValueChange = {
                             signUpEmail = it
                         },
@@ -134,7 +200,7 @@ fun SignUpScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = Color(0xFF209AFD),
+                                cursorColor = MaterialTheme.colorScheme.primary,
                                 containerColor = Color.White
                             ),
                             leadingIcon = {
@@ -153,16 +219,18 @@ fun SignUpScreen(
                                 Text(
                                     text = "Enter your Email",
                                     fontSize = 15.sp,
-                                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                                    fontFamily = FontFamily(Font(R.font.poppinsemibold)),
+                                    color = MaterialTheme.colorScheme.onPrimary
+
                                 )
                             }
 
 
                         )
                         ///
-                        Spacer(modifier = Modifier.height(30.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
 
-
+//password
                         TextField(value = signUpPassword, onValueChange = {
                             signUpPassword = it
                         },
@@ -175,9 +243,11 @@ fun SignUpScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = Color(0xFF209AFD),
-                                containerColor = Color.White
-                            ),
+                                cursorColor = MaterialTheme.colorScheme.primary,
+                                containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+
+                                ),
+
                             visualTransformation = if (passwordVisible) VisualTransformation.None else
                                 PasswordVisualTransformation(),
 
@@ -222,14 +292,87 @@ fun SignUpScreen(
                         )
 
                         Spacer(modifier = Modifier.height(30.dp))
+                        //confrim pasword
+                        TextField(value = sigUpConfirmPassword, onValueChange = {
+                            sigUpConfirmPassword = it
+                        },
+                            modifier = Modifier
+                                .padding(start = 20.dp, end = 20.dp)
+                                //.fillMaxWidth()
+                                .width(300.dp)
+                                .height(53.dp),
+                            shape = RoundedCornerShape(18.dp),
+                            colors = TextFieldDefaults.textFieldColors(
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent,
+                                cursorColor = MaterialTheme.colorScheme.primary,
+                                containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                            ),
+                            visualTransformation = if (passwordVisible) VisualTransformation.None else
+                                PasswordVisualTransformation(),
+
+                            trailingIcon = {
+
+                                val image = if (passwordVisible)
+                                    Icons.Filled.Visibility
+                                else Icons.Filled.VisibilityOff
+
+                                // Localized description for accessibility services
+                                val description =
+                                    if (passwordVisible) "Hide password" else "Show password"
+
+                                // Toggle button to hide or display password
+                                IconButton(onClick = { passwordVisible = !passwordVisible }) {
+                                    Icon(
+                                        imageVector = image, description,
+                                        modifier = Modifier.size(20.dp)
+                                    )
+                                }
+
+                            },
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Default.Lock,
+                                    contentDescription = "pass",
+                                    modifier = Modifier.size(20.dp)
+                                )
+
+                            },
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Password,
+                                imeAction = ImeAction.Done
+                            ),
+                            placeholder = {
+                                Text(
+                                    text = "Confirm password",
+                                    fontSize = 15.sp,
+                                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                                )
+                            }
+                        )
+
+                        Spacer(modifier = Modifier.height(30.dp))
 
                         Button(
-                            onClick = { navigateToVerify() },
+                            onClick = {
+
+
+                                val registerRequest = RegisterRequest(
+                                    password = signUpPassword,
+                                    email = signUpEmail,
+                                    name = signUpName,
+                                    confirm_password = sigUpConfirmPassword
+                                )
+
+                                viewModel.signup(registerRequest)
+
+
+                            },
 
                             modifier = Modifier
                                 .align(Alignment.End)
-                                .padding(start = 20.dp, end = 20.dp)
-                                .width(102.dp)
+                                .padding(start = 20.dp, end = 20.dp, bottom = 15.dp)
+                                .width(104.dp)
                                 .height(40.dp),
 
                             shape = RoundedCornerShape(18.dp),
@@ -243,23 +386,24 @@ fun SignUpScreen(
                                 fontFamily = FontFamily(Font(R.font.poppinsemibold))
                             )
                         }
-
+                        if (state.value.isLoading) {
+                            CircularProgressIndicator()
+                        } else if (state.value.success != null) {
+                            navigateToVerify()
+                        }
 
                     }
 
-
                 }
+
 
             }
 
-
         }
 
+
     }
-
-
 }
-
 
 @Composable
 fun SignUpAnimation() {
@@ -286,6 +430,7 @@ fun SignUpAnimation() {
 
     Box(
         modifier = Modifier
+
             .fillMaxWidth(),
         contentAlignment = Alignment.Center
 
@@ -293,8 +438,9 @@ fun SignUpAnimation() {
         Icon(
             painter = painterResource(id = R.drawable.circle),
             contentDescription = "Circle",
-            tint = Color(0xFF209AFD).copy(alpha = 0.7f),
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
             modifier = Modifier
+
                 .size(160.dp)
                 .scale(scale)
 
@@ -316,10 +462,13 @@ fun SignUpAnimation() {
 }
 
 
+/*
+
+
 @Preview
 @Composable
 fun MyPreview() {
     SignUpScreen(
         {}
     )
-}
+}*/
