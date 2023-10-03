@@ -2,6 +2,7 @@ package com.essycynthia.moviechat.ui.login_screens
 
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -54,6 +55,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -82,6 +84,7 @@ fun LoginScreen(
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
+    val mContext = LocalContext.current
     Scaffold() {
         LazyColumn(
             modifier = Modifier
@@ -254,11 +257,8 @@ fun LoginScreen(
                         Button(
                             onClick = {
                                 loginScreenViewModel.loginUser(loginScreenViewModel.loginRequest)
-                                if (uiState.loginSuccess){
-                                    navigateToChat()
-                                }
-                            },
 
+                            },
                             modifier = Modifier
                                 .align(Alignment.End)
 
@@ -309,22 +309,23 @@ fun LoginScreen(
                             )
 
                         }
+                        when(uiState.loginSuccess){
+                            true -> {
+                                navigateToChat()
+                            }
+                            false -> {
+                                if(uiState.isLoading){
 
-
+                                }else{
+                                    Toast.makeText(mContext, "Wrong Details", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
                     }
-
-
                 }
-
             }
-
-
-
         }
-
     }
-
-
 }
 
 
