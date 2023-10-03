@@ -23,6 +23,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -105,7 +106,7 @@ fun ForgotPasswordScreen(
                         .padding(start = 20.dp, end = 20.dp)
                         .height(180.dp)
                         .background(
-                            Color(0xFF209AFD), RoundedCornerShape(28.dp)
+                            MaterialTheme.colorScheme.primary, RoundedCornerShape(28.dp)
                         )
 
                         .fillMaxWidth(),
@@ -129,7 +130,7 @@ fun ForgotPasswordScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = Color(0xFF209AFD),
+                                cursorColor =MaterialTheme.colorScheme.primary,
                                 containerColor = Color.White
                             ),
                             leadingIcon = {

@@ -64,7 +64,7 @@ fun VerificationColumn(
             Button(
                 onClick = { navigateToChat() },
                 shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF209AFD)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(focusRequester5)
