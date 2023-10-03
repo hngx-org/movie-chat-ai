@@ -391,17 +391,10 @@ fun SignUpScreen(
                         }else if (state.value.success != null ){
                             navigateToLogin()
                         }
-
                     }
-
                 }
-
-
             }
-
         }
-
-
     }
 }
 

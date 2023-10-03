@@ -35,6 +35,7 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -69,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.essycynthia.moviechat.R
+import com.essycynthia.moviechat.data.dto.requests.LoginRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -141,9 +143,9 @@ fun LoginScreen(
 
                     ) {
 
-                        TextField(value = uiState.userDetails.email,
+                        TextField(value = email,
                             onValueChange = {
-                                loginScreenViewModel.updateUserDetails(uiState.userDetails.copy(email = it))
+                                email = it
                             },
                             modifier = Modifier
                                 .padding(start = 20.dp, end = 20.dp)
@@ -183,9 +185,9 @@ fun LoginScreen(
                         Spacer(modifier = Modifier.height(30.dp))
 
 
-                        TextField(value = uiState.userDetails.password,
+                        TextField(value = password,
                             onValueChange = {
-                                loginScreenViewModel.updateUserDetails(uiState.userDetails.copy(password = it))
+                                password = it
                             },
                             modifier = Modifier
                                 .padding(start = 20.dp, end = 20.dp)
@@ -256,8 +258,7 @@ fun LoginScreen(
                         Spacer(modifier = Modifier.height(10.dp))
                         Button(
                             onClick = {
-                                loginScreenViewModel.loginUser(loginScreenViewModel.loginRequest)
-
+                                loginScreenViewModel.loginUser(LoginRequest(email = email, password = password))
                             },
                             modifier = Modifier
                                 .align(Alignment.End)
@@ -315,9 +316,9 @@ fun LoginScreen(
                             }
                             false -> {
                                 if(uiState.isLoading){
-
-                                }else{
-                                    Toast.makeText(mContext, "Wrong Details", Toast.LENGTH_SHORT).show()
+                                    CircularProgressIndicator()
+                                }else if (uiState.error != null){
+                                    Toast.makeText(mContext, uiState.error, Toast.LENGTH_SHORT).show()
                                 }
                             }
                         }
