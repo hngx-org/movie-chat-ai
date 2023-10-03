@@ -39,7 +39,7 @@ import com.essycynthia.moviechat.R
 @Composable
 fun VerificationColumn(
     focusRequester5: FocusRequester = remember {FocusRequester()},
-    navigateToChat: ()->Unit
+    navigateToReset: ()->Unit
 ){
     Surface() {
         Column(
@@ -62,7 +62,7 @@ fun VerificationColumn(
             CodeRow(focusRequester5)
             Text(text = "Didn't get a code? Resend")
             Button(
-                onClick = { navigateToChat() },
+                onClick = { navigateToReset() },
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 modifier = Modifier
