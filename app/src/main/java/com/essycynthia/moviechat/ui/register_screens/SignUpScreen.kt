@@ -134,7 +134,7 @@ fun SignUpScreen(
                         //check
                         .height(400.dp)
                         .background(
-                            Color(0xFF209AFD),
+                            MaterialTheme.colorScheme.primary,
                             RoundedCornerShape(topStart = 100.dp, bottomEnd = 100.dp)
                         )
                         // .padding(15.dp)
@@ -200,7 +200,7 @@ fun SignUpScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = Color(0xFF209AFD),
+                                cursorColor = MaterialTheme.colorScheme.primary,
                                 containerColor = Color.White
                             ),
                             leadingIcon = {
@@ -219,7 +219,9 @@ fun SignUpScreen(
                                 Text(
                                     text = "Enter your Email",
                                     fontSize = 15.sp,
-                                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                                    fontFamily = FontFamily(Font(R.font.poppinsemibold)),
+                                    color = MaterialTheme.colorScheme.onPrimary
+
                                 )
                             }
 
@@ -241,9 +243,11 @@ fun SignUpScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = Color(0xFF209AFD),
-                                containerColor = Color.White
+                                cursorColor = MaterialTheme.colorScheme.primary,
+                                containerColor = Color.White,
+
                             ),
+
                             visualTransformation = if (passwordVisible) VisualTransformation.None else
                                 PasswordVisualTransformation(),
 
@@ -434,7 +438,7 @@ fun SignUpAnimation() {
         Icon(
             painter = painterResource(id = R.drawable.circle),
             contentDescription = "Circle",
-            tint = Color(0xFF209AFD).copy(alpha = 0.7f),
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
             modifier = Modifier
 
                 .size(160.dp)
