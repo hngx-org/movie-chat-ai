@@ -43,6 +43,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -64,6 +65,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.essycynthia.moviechat.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,8 +75,10 @@ import com.essycynthia.moviechat.R
 fun LoginScreen(
     navigateToForgot: ()-> Unit,
     navigateToSignUp:()-> Unit,
-    navigateToChat:()-> Unit
+    navigateToChat:()-> Unit,
+    loginScreenViewModel: LoginScreenViewModel = hiltViewModel()
 ) {
+    val uiState by loginScreenViewModel.uiState.collectAsState()
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -134,9 +138,9 @@ fun LoginScreen(
 
                     ) {
 
-                        TextField(value = email,
+                        TextField(value = uiState.userDetails.email,
                             onValueChange = {
-                                email = it
+                                loginScreenViewModel.updateUserDetails(uiState.userDetails.copy(email = it))
                             },
                             modifier = Modifier
                                 .padding(start = 20.dp, end = 20.dp)
@@ -176,9 +180,9 @@ fun LoginScreen(
                         Spacer(modifier = Modifier.height(30.dp))
 
 
-                        TextField(value = password,
+                        TextField(value = uiState.userDetails.password,
                             onValueChange = {
-                                password = it
+                                loginScreenViewModel.updateUserDetails(uiState.userDetails.copy(password = it))
                             },
                             modifier = Modifier
                                 .padding(start = 20.dp, end = 20.dp)
@@ -238,7 +242,7 @@ fun LoginScreen(
                         Text(
                             text = "Forgot password?",
                             modifier = Modifier
-                                .clickable{navigateToForgot()}
+                                .clickable { navigateToForgot() }
                                 .padding(start = 20.dp),
                             fontSize = 14.sp,
                             color = Color.White,
@@ -248,7 +252,12 @@ fun LoginScreen(
 
                         Spacer(modifier = Modifier.height(10.dp))
                         Button(
-                            onClick = { navigateToChat() },
+                            onClick = {
+                                loginScreenViewModel.loginUser(loginScreenViewModel.loginRequest)
+                                if (uiState.loginSuccess){
+                                    navigateToChat()
+                                }
+                            },
 
                             modifier = Modifier
                                 .align(Alignment.End)
