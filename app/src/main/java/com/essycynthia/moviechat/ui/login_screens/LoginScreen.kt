@@ -125,7 +125,7 @@ fun LoginScreen(
                     modifier = Modifier
                         .height(320.dp)
                         .background(
-                            Color(0xFF209AFD),
+                            MaterialTheme.colorScheme.primary,
                             RoundedCornerShape(topStart = 100.dp, bottomEnd = 100.dp)
                         )
                         // .padding(15.dp)
@@ -152,7 +152,7 @@ fun LoginScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = Color(0xFF209AFD),
+                                cursorColor = MaterialTheme.colorScheme.primary,
                                 containerColor = Color.White
                             ),
                             leadingIcon = {
@@ -356,7 +356,7 @@ fun LoginAnimation() {
         Icon(
             painter = painterResource(id = R.drawable.circle),
             contentDescription = "Circle",
-            tint = Color(0xFF209AFD).copy(alpha = 0.7f),
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
             modifier = Modifier
                 .size(160.dp)
                 .scale(scale)
