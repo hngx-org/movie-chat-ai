@@ -27,10 +27,10 @@ class LoginScreenViewModel @Inject constructor(
             when (val response = repository.loginUser(loginRequest)){
                 is Resource.Success -> {
                     token = response.data?.data
-                    _uiState.value = LoginScreenState(loginSuccess = true)
+                    _uiState.value = LoginScreenState(loginSuccess = true, isLoading = false)
                 }
                 is Resource.Error -> {
-                    _uiState.value = LoginScreenState(loginSuccess = false)
+                    _uiState.value = LoginScreenState(loginSuccess = false, isLoading = false)
                 }
                 is Resource.Loading -> {
                     _uiState.value = LoginScreenState(loginSuccess = false)
@@ -47,7 +47,8 @@ class LoginScreenViewModel @Inject constructor(
 
 data class LoginScreenState(
     val userDetails: UserLoginDetails = UserLoginDetails(),
-     val loginSuccess: Boolean = false
+    val loginSuccess: Boolean = false,
+    val isLoading: Boolean = true
 )
 data class UserLoginDetails(
     val email: String = "",
