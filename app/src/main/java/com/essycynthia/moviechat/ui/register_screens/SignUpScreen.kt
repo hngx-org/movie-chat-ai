@@ -10,6 +10,7 @@ import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,10 +72,10 @@ import com.essycynthia.moviechat.data.dto.requests.RegisterRequest
 
 fun SignUpScreen(
 
-    navigateToVerify:()-> Unit,
+    navigateToVerify: () -> Unit,
     viewModel: SignUpScreenViewModel = hiltViewModel(),
 
-) {
+    ) {
     var signUpEmail by remember { mutableStateOf("") }
     var signUpPassword by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
@@ -123,7 +124,6 @@ fun SignUpScreen(
 
             }
             ///check
-
 
 
             item {
@@ -244,9 +244,9 @@ fun SignUpScreen(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
                                 cursorColor = MaterialTheme.colorScheme.primary,
-                                containerColor = Color.White,
+                                containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
 
-                            ),
+                                ),
 
                             visualTransformation = if (passwordVisible) VisualTransformation.None else
                                 PasswordVisualTransformation(),
@@ -292,7 +292,7 @@ fun SignUpScreen(
                         )
 
                         Spacer(modifier = Modifier.height(30.dp))
-//confrim pasword
+                        //confrim pasword
                         TextField(value = sigUpConfirmPassword, onValueChange = {
                             sigUpConfirmPassword = it
                         },
@@ -305,8 +305,8 @@ fun SignUpScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = Color(0xFF209AFD),
-                                containerColor = Color.White
+                                cursorColor = MaterialTheme.colorScheme.primary,
+                                containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
                             ),
                             visualTransformation = if (passwordVisible) VisualTransformation.None else
                                 PasswordVisualTransformation(),
@@ -357,7 +357,7 @@ fun SignUpScreen(
                             onClick = {
 
 
-                                    val registerRequest = RegisterRequest(
+                                val registerRequest = RegisterRequest(
                                     password = signUpPassword,
                                     email = signUpEmail,
                                     name = signUpName,
@@ -386,9 +386,9 @@ fun SignUpScreen(
                                 fontFamily = FontFamily(Font(R.font.poppinsemibold))
                             )
                         }
-                        if (state.value.isLoading){
+                        if (state.value.isLoading) {
                             CircularProgressIndicator()
-                        }else if (state.value.success != null ){
+                        } else if (state.value.success != null) {
                             navigateToVerify()
                         }
 
@@ -460,8 +460,6 @@ fun SignUpAnimation() {
 
     }
 }
-
-
 
 
 /*
