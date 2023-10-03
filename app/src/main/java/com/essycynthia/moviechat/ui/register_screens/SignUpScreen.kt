@@ -72,7 +72,8 @@ import com.essycynthia.moviechat.data.dto.requests.RegisterRequest
 
 fun SignUpScreen(
 
-    navigateToVerify: () -> Unit,
+    navigateToChat: () -> Unit,
+
     viewModel: SignUpScreenViewModel = hiltViewModel(),
 
     ) {
@@ -388,8 +389,13 @@ fun SignUpScreen(
                         }
                         if (state.value.isLoading) {
                             CircularProgressIndicator()
+                            <<<<<<< HEAD
                         } else if (state.value.success != null) {
                             navigateToVerify()
+                            ====== =
+                        } else if (state.value.success != null) {
+                            navigateToLogin()
+                            >>>>>>> da9ac72ea612aacdc9cb4c09e3f59aea600608d7
                         }
 
                     }
