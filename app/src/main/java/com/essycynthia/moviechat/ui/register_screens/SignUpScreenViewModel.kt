@@ -35,7 +35,6 @@ class SignUpScreenViewModel @Inject constructor(private  val repository: MovieRe
                     )
                 }
             }
-
         }
     }
 }

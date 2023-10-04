@@ -392,20 +392,15 @@ fun SignUpScreen(
                         } else if (state.value.success != null) {
                             navigateToChat()
                         }
+
 //                        else if (state.value.success != null) {
 //
 //                        }
 
                     }
-
                 }
-
-
             }
-
         }
-
-
     }
 }
 

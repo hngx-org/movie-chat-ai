@@ -19,45 +19,40 @@ class LoginScreenViewModel @Inject constructor(
 ) : ViewModel(){
     private var _uiState = MutableStateFlow(LoginScreenState())
     val uiState: StateFlow<LoginScreenState> = _uiState.asStateFlow()
-    var token: LoginResponseData? = null
-    val loginRequest = _uiState.value.userDetails.toLoginRequest()
+    //private val loginRequest = _uiState.value.userDetails.toLoginRequest()
 
-    fun loginUser(loginRequest: LoginRequest): LoginResponseData?{
+    fun loginUser(loginRequest: LoginRequest){
         viewModelScope.launch {
+            _uiState.value = LoginScreenState(isLoading = true)
             when (val response = repository.loginUser(loginRequest)){
                 is Resource.Success -> {
-                    token = response.data?.data
                     _uiState.value = LoginScreenState(loginSuccess = true, isLoading = false)
                 }
                 is Resource.Error -> {
-                    _uiState.value = LoginScreenState(loginSuccess = false, isLoading = false)
+                    _uiState.value = LoginScreenState(loginSuccess = false, isLoading = false, error = response.message?: "Error")
                 }
                 is Resource.Loading -> {
                     _uiState.value = LoginScreenState(loginSuccess = false)
                 }
             }
         }
-        return token
     }
 
-    fun updateUserDetails(userDetails: UserLoginDetails){
+    /*fun updateUserDetails(userDetails: UserLoginDetails){
         _uiState.value = LoginScreenState(userDetails = userDetails)
-    }
+    }*/
 }
 
 data class LoginScreenState(
-    val userDetails: UserLoginDetails = UserLoginDetails(),
+    //val userDetails: UserLoginDetails = UserLoginDetails(),
     val loginSuccess: Boolean = false,
-    val isLoading: Boolean = true
+    val isLoading: Boolean = false,
+    val error: String? = null
 )
-data class UserLoginDetails(
+/*data class UserLoginDetails(
     val email: String = "",
     val password: String = ""
-)
+)*/
 
-fun UserLoginDetails.toLoginRequest(): LoginRequest{
-    return LoginRequest(
-        email = email,
-        password = password
-    )
-}
+/*
+fun UserLoginDetails.toLoginRequest() = LoginRequest(email = email, password = password)*/
