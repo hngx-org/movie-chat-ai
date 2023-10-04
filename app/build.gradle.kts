@@ -97,12 +97,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
 
     //Dagger-Hilt dependencies
-
     implementation("com.google.dagger:hilt-android:2.46.1")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     kapt("com.google.dagger:hilt-android-compiler:2.46.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
+    //Timber
+    implementation ("com.jakewharton.timber:timber:5.0.1")
 
 
     // Retrofit
@@ -113,6 +114,10 @@ dependencies {
 
     //Mockito testing
     testImplementation("org.mockito:mockito-core:5.2.0")
+
+    //Authentication packaging
+    implementation ("com.github.hngx-org:mirage-kotlin-auth-library:2.0.0")
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

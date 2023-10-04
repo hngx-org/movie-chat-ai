@@ -99,7 +99,7 @@ fun MovieRecommenderApp(
             }
             composable(NavigationRoutes.SIGNUP.name){
                 SignUpScreen(
-                    navigateToLogin = {navController.navigate(NavigationRoutes.LOGIN.name)}
+                    navigateToChat = {navController.navigate(NavigationRoutes.CHAT_SCREEN.name)},
                 )
             }
             composable(NavigationRoutes.CHAT_SCREEN.name){
