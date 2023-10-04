@@ -25,6 +25,8 @@ import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
@@ -57,8 +59,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.essycynthia.moviechat.R
 import com.essycynthia.moviechat.data.Message
+import com.essycynthia.moviechat.ui.navigation.NavigationRoutes
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -83,7 +87,9 @@ data class NavigationItem(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatScreen() {
+fun ChatScreen(
+    navigateToPayment: () -> Unit) {
+    val viewModel = remember { ChatViewModel() }
     val simpleDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
     val messageDummy = remember { mutableStateListOf<Message>() }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -91,7 +97,8 @@ fun ChatScreen() {
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
-    val items = listOf(
+    var showPaymentDialog by remember { mutableStateOf(false) }
+    val items = remember { mutableStateListOf<NavigationItem>(
         NavigationItem(
             title = "All",
             selectedIcon = Icons.Filled.Home,
@@ -102,13 +109,14 @@ fun ChatScreen() {
             selectedIcon = Icons.Filled.DarkMode,
             unselectedIcon = Icons.Outlined.LightMode,
 
-        ),
+            ),
         NavigationItem(
             title = "Settings",
             selectedIcon = Icons.Filled.Settings,
             unselectedIcon = Icons.Outlined.Settings,
-        ),
-    )
+        )
+    ) }
+
 
     ModalNavigationDrawer(drawerContent = { ModalDrawerSheet {
         Spacer(modifier = Modifier.height(16.dp))
@@ -141,22 +149,56 @@ fun ChatScreen() {
     }},
       drawerState =  drawerState
   ) {
-        Scaffold {
-            TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) },
-                navigationIcon = {
-                    IconButton(onClick = { scope.launch { drawerState.open() } }) {
-                        Icon(imageVector = Icons.Default.Menu, contentDescription = "Toggle drawer")
 
-                    }
-                },
-                actions = {
-                    IconButton(onClick = { TODO() }) {
-                        Icon(imageVector = Icons.Default.Add, contentDescription = "Add chat")
+            Scaffold {
+                TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) },
+                    navigationIcon = {
+                        IconButton(onClick = { scope.launch { drawerState.open() } }) {
+                            Icon(
+                                imageVector = Icons.Default.Menu,
+                                contentDescription = "Toggle drawer"
+                            )
 
-                    }
-                })
+                        }
+                    },
+                    actions = {
+                        IconButton(onClick = { TODO() }) {
+                            Icon(imageVector = Icons.Default.Add, contentDescription = "Add chat")
+
+                        }
+                    })
+            }
+            if (showPaymentDialog) {
+                AlertDialog(
+                    onDismissRequest = {
+                        // Dismiss the dialog
+                        showPaymentDialog = false
+                    },
+                    title = {
+                        Text(text = "Payment Required")
+                    },
+                    text = {
+                        Text(text = "You have sent 3 messages. To continue, please proceed to payment.")
+                    },
+                    confirmButton = {
+                        Button(
+                            onClick = {
+                                // Handle the "PROCEED TO PAYMENT" button click here
+                                // You can navigate to a payment screen or perform payment logic.
+                                    navigateToPayment()
+                                // Dismiss the dialog
+                                showPaymentDialog = false
+                            }
+                        ) {
+                            Text(text = "PROCEED TO PAYMENT")
+                        }
+                    },
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
         }
-  }
+
+    
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -168,7 +210,7 @@ fun ChatScreen() {
                 .padding(16.dp),
             reverseLayout = true
         ) {
-            items(messageDummy.reversed()) { chat ->
+            items(viewModel.messages.value.reversed()) { chat ->
                 MessageItem(
                     messageText = chat.text,
                     time = simpleDateFormat.format(chat.time),
@@ -178,17 +220,38 @@ fun ChatScreen() {
             }
         }
         MessageSection { userMessage ->
-            // When the user sends a message, add it to the messages list
-            messageDummy.add(Message(text = userMessage, recipientId = "user", isOut = true))
-
-            // Check if the user's message is "Hi" and generate a response from the bot
-            if (userMessage.equals("Hi", ignoreCase = true)) {
-                messageDummy.add(Message(text = "Hello! How can I assist you?", recipientId = "bot", isOut = false))
-            }else{
-                messageDummy.add(Message(text = "The question is not related to movies...Please ask again", recipientId = "bot", isOut = false))
-
+            viewModel.sendMessage(userMessage) { userMessage ->
+                // Handle the user message sent callback here if needed
             }
         }
+    }
+
+    if (viewModel.showPaymentDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                // Dismiss the dialog
+                viewModel.showPaymentDialog = false
+            },
+            title = {
+                Text(text = "Payment Required")
+            },
+            text = {
+                Text(text = "You have sent 3 messages. To continue, please proceed to payment.")
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        // Handle the "PROCEED TO PAYMENT" button click here
+                        navigateToPayment()
+                        // Dismiss the dialog
+                        viewModel.showPaymentDialog = false
+                    }
+                ) {
+                    Text(text = "PROCEED TO PAYMENT")
+                }
+            },
+            modifier = Modifier.padding(16.dp)
+        )
     }
 }
 
@@ -197,6 +260,9 @@ fun ChatScreen() {
 @Composable
 fun MessageSection(onUserMessageSent: (String) -> Unit) {
     val messageDummy = remember { mutableStateListOf<Message>() }
+    var messagesSent by remember { mutableStateOf(0) }
+    var showPaymentDialog by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
@@ -218,7 +284,12 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
                         if (userMessage.isNotBlank()) {
                             // Add the user's message first
                             messageDummy.add(Message(text = userMessage, recipientId = "user", isOut = true))
+                            messagesSent++
                             onUserMessageSent(userMessage)
+                            if (messagesSent == 3) {
+                                // Show the payment dialog
+                                showPaymentDialog = true
+                            }
 
                             // Check if the user's message is "Hi" and generate a response from the bot
                             if (userMessage.equals("Hi", ignoreCase = true)) {
