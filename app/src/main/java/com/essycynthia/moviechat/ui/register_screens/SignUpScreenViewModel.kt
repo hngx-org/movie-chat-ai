@@ -18,8 +18,6 @@ class SignUpScreenViewModel @Inject constructor(private  val repository: MovieRe
     val userSignUpState: MutableStateFlow<SignUpScreenState> = _userSignUpState
 
     fun signup(registerRequest: RegisterRequest){
-
-
         viewModelScope.launch(Dispatchers.IO){
             _userSignUpState.value = SignUpScreenState(isLoading = true, error = null)
 
