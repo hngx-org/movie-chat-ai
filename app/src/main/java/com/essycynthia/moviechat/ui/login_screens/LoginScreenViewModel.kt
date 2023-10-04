@@ -24,7 +24,8 @@ class LoginScreenViewModel @Inject constructor(
     fun loginUser(loginRequest: LoginRequest){
         viewModelScope.launch {
             _uiState.value = LoginScreenState(isLoading = true)
-            when (val response = repository.loginUser(loginRequest)){
+            val response = repository.loginUser(loginRequest)
+            when (response){
                 is Resource.Success -> {
                     _uiState.value = LoginScreenState(loginSuccess = true, isLoading = false)
                 }
@@ -35,13 +36,16 @@ class LoginScreenViewModel @Inject constructor(
                     _uiState.value = LoginScreenState(loginSuccess = false)
                 }
             }
+
+
+            }
         }
     }
 
     /*fun updateUserDetails(userDetails: UserLoginDetails){
         _uiState.value = LoginScreenState(userDetails = userDetails)
     }*/
-}
+
 
 data class LoginScreenState(
     //val userDetails: UserLoginDetails = UserLoginDetails(),
