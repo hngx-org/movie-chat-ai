@@ -245,7 +245,7 @@ fun SignUpScreen(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
                                 cursorColor = MaterialTheme.colorScheme.primary,
-                                containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                               // containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
 
                                 ),
 
@@ -307,7 +307,7 @@ fun SignUpScreen(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
                                 cursorColor = MaterialTheme.colorScheme.primary,
-                                containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                               // containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
                             ),
                             visualTransformation = if (passwordVisible) VisualTransformation.None else
                                 PasswordVisualTransformation(),
