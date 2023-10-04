@@ -103,7 +103,10 @@ fun MovieRecommenderApp(
                 )
             }
             composable(NavigationRoutes.CHAT_SCREEN.name){
-                ChatScreen()
+                ChatScreen(
+                    navigateToPayment = {navController.navigate(NavigationRoutes.PAYMENT.name)},
+
+                    )
             }
 
             composable(NavigationRoutes.PAYMENT.name){
