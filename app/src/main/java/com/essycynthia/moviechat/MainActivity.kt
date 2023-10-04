@@ -7,7 +7,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.essycynthia.moviechat.ui.home_screens.ChatScreen
 import com.essycynthia.moviechat.ui.navigation.MovieRecommenderApp
+import com.essycynthia.moviechat.ui.navigation.NavigationRoutes
+import com.essycynthia.moviechat.ui.payment_verification_screens.PaymentMethodScreen
 import com.essycynthia.moviechat.ui.theme.MovieChatTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,8 +28,20 @@ class  MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MovieRecommenderApp()
-                 //   ChatScreen()
+                    val navController = rememberNavController()
+                    NavHost(navController = navController, startDestination = NavigationRoutes.CHAT_SCREEN.name){
+                        composable(NavigationRoutes.CHAT_SCREEN.name){
+                            ChatScreen (
+                                navigateToPayment = {navController.navigate(NavigationRoutes.PAYMENT.name)},
+                            )
+
+                        }
+                        composable(NavigationRoutes.PAYMENT.name){
+                            PaymentMethodScreen()
+                        }
+                    }
+
+//                    MovieRecommenderApp()
                   //  SignUpScreen()
                     //LoginScreen()
                    // ResetPasswordScreen()
