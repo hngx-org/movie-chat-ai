@@ -1,17 +1,11 @@
 package com.essycynthia.moviechat.ui.navigation
 
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -20,16 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.essycynthia.moviechat.ui.home_screens.ChatScreen
-import com.essycynthia.moviechat.ui.login_screens.ForgotPasswordScreen
+import com.essycynthia.moviechat.ui.password_screens.ForgotPasswordScreen
 import com.essycynthia.moviechat.ui.login_screens.LoginScreen
-import com.essycynthia.moviechat.ui.login_screens.ResetPasswordScreen
+import com.essycynthia.moviechat.ui.password_screens.ResetPasswordScreen
 import com.essycynthia.moviechat.ui.register_screens.SignUpScreen
 import com.essycynthia.moviechat.ui.payment_verification_screens.PaymentMethodScreen
 import com.essycynthia.moviechat.ui.payment_verification_screens.VerificationColumn

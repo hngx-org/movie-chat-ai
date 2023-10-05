@@ -65,6 +65,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.essycynthia.moviechat.R
 import com.essycynthia.moviechat.data.dto.requests.RegisterRequest
+import com.shegs.hng_auth_library.model.SignupRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -358,7 +359,7 @@ fun SignUpScreen(
                             onClick = {
 
 
-                                val registerRequest = RegisterRequest(
+                                val registerRequest = SignupRequest(
                                     password = signUpPassword,
                                     email = signUpEmail,
                                     name = signUpName,
