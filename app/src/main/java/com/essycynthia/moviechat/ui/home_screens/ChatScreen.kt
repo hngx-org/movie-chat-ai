@@ -28,6 +28,7 @@ import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -232,36 +233,46 @@ fun ChatScreen(
     }
     if (showDialog) {
         AlertDialog(
-            modifier = Modifier.size(250.dp),// Adjust the size as needed
+            //modifier = Modifier
+               //.background(Color.White)
+                ///.size(250.dp), // Adjust the size as needed
 
             onDismissRequest = {
                 // Dismiss the dialog and reset showDialog
                 showDialog = false
             },
+
             title = {
-                Text("LIMIT REACHED!!!")
+                Text("LIMIT REACHED!!!",
+                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                    )
             },
             text = {
-                Text("You've reached your free trial")
+                Text("You've reached your free trial",
+                    fontFamily = FontFamily(Font(R.font.poppinslight)))
             },
             confirmButton = {
-                IconButton(
-                    modifier = Modifier.fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.primary)
-                        , // Adjust the size as needed
+                Button(
+                    modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(Color(0xFF209AFD)),
+                    shape = RoundedCornerShape(10.dp),
 
+                    // Adjust the size as needed
                     onClick = {
                         // Perform any action you want when the dialog is confirmed
                         navigateToPayment()
                         showDialog = false
+                              },
 
-                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.ArrowRight,
                         contentDescription = "PAYMENT BUTTON"
                     )
-                    Text("PROCEED TO PAYMENT", color = Color.White)
+                    Text("PROCEED TO PAYMENT",
+                        modifier = Modifier.fillMaxWidth(),
+                        fontFamily = FontFamily(Font(R.font.poppinsemibold)),
+                        color = Color.White)
                 }
             }
         )
@@ -361,7 +372,7 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
 
 
     }
-    if (showDialog) {
+   /* if (showDialog) {
         AlertDialog(
             onDismissRequest = {
                 // Dismiss the dialog and reset showDialog
@@ -384,7 +395,7 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
                 }
             }
         )
-    }
+    }*/
 }
 
 
