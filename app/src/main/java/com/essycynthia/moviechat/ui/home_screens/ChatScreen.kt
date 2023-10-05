@@ -6,27 +6,25 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DrawerValue
@@ -74,7 +72,6 @@ val BotChatBubbleShape: Shape = RoundedCornerShape(
     topStart = 48f,
     topEnd = 48f, bottomStart = 0f, bottomEnd = 48f
 )
-
 data class NavigationItem(
     val title: String,
     val selectedIcon: ImageVector,
@@ -86,9 +83,7 @@ data class NavigationItem(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ChatScreen(
-    navigateToPayment: () -> Unit
-) {
+fun ChatScreen() {
     val simpleDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
     val messageDummy = remember { mutableStateListOf<Message>() }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -96,65 +91,57 @@ fun ChatScreen(
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
-    var showDialog by remember { mutableStateOf(false) }
-    var messageSent by remember { mutableStateOf(0) }
-    val items = remember {
-        mutableStateListOf<NavigationItem>(
-            NavigationItem(
-                title = "All",
-                selectedIcon = Icons.Filled.Home,
-                unselectedIcon = Icons.Outlined.Home,
-            ),
-            NavigationItem(
-                title = "Dark Mode",
-                selectedIcon = Icons.Filled.DarkMode,
-                unselectedIcon = Icons.Outlined.LightMode,
+    val items = listOf(
+        NavigationItem(
+            title = "All",
+            selectedIcon = Icons.Filled.Home,
+            unselectedIcon = Icons.Outlined.Home,
+        ),
+        NavigationItem(
+            title = "Dark Mode",
+            selectedIcon = Icons.Filled.DarkMode,
+            unselectedIcon = Icons.Outlined.LightMode,
 
-                ),
-            NavigationItem(
-                title = "Settings",
-                selectedIcon = Icons.Filled.Settings,
-                unselectedIcon = Icons.Outlined.Settings,
-            ),
-        )
-    }
+        ),
+        NavigationItem(
+            title = "Settings",
+            selectedIcon = Icons.Filled.Settings,
+            unselectedIcon = Icons.Outlined.Settings,
+        ),
+    )
 
-    ModalNavigationDrawer(
-        drawerContent = {
-            ModalDrawerSheet {
-                Spacer(modifier = Modifier.height(16.dp))
-                items.forEachIndexed { index, item ->
-                    NavigationDrawerItem(
-                        label = {
-                            Text(text = item.title)
-                        },
-                        selected = index == selectedItemIndex,
-                        onClick = {
+    ModalNavigationDrawer(drawerContent = { ModalDrawerSheet {
+        Spacer(modifier = Modifier.height(16.dp))
+        items.forEachIndexed { index, item ->
+            NavigationDrawerItem(
+                label = {
+                    Text(text = item.title)
+                },
+                selected = index == selectedItemIndex,
+                onClick = {
 //                                            navController.navigate(item.route)
-                            selectedItemIndex = index
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = if (index == selectedItemIndex) {
-                                    item.selectedIcon
-                                } else item.unselectedIcon,
-                                contentDescription = item.title
-                            )
-                        },
-
-                        modifier = Modifier
-                            .padding(NavigationDrawerItemDefaults.ItemPadding)
+                    selectedItemIndex = index
+                    scope.launch {
+                        drawerState.close()
+                    }
+                },
+                icon = {
+                    Icon(
+                        imageVector = if (index == selectedItemIndex) {
+                            item.selectedIcon
+                        } else item.unselectedIcon,
+                        contentDescription = item.title
                     )
-                }
-            }
-        },
-        drawerState = drawerState
-    ) {
-        Scaffold(modifier = Modifier.padding(16.dp),
-        ) {
+                },
+
+                modifier = Modifier
+                    .padding(NavigationDrawerItemDefaults.ItemPadding)
+            )
+        }
+    }},
+      drawerState =  drawerState
+  ) {
+        Scaffold {
             TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) },
                 navigationIcon = {
                     IconButton(onClick = { scope.launch { drawerState.open() } }) {
@@ -169,93 +156,40 @@ fun ChatScreen(
                     }
                 })
         }
-    }
+  }
 
-    Column {
-        Spacer(modifier = Modifier.height(48.dp)) // Add some spacing at the top
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
         LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                //            reverseLayout = true
-            ) {
-                items(messageDummy) { chat ->
-                    MessageItem(
-                        messageText = chat.text,
-                        time = simpleDateFormat.format(chat.time),
-                        isOut = chat.isOut
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f) // This makes the LazyColumn take up available space
+                .padding(16.dp),
+            reverseLayout = true
+        ) {
+            items(messageDummy.reversed()) { chat ->
+                MessageItem(
+                    messageText = chat.text,
+                    time = simpleDateFormat.format(chat.time),
+                    isOut = chat.isOut
+                )
+                Spacer(modifier = Modifier.height(8.dp))
             }
-            MessageSection { userMessage ->
-                // When the user sends a message, add it to the messages list
-                messageDummy.add(Message(text = userMessage, recipientId = "user", isOut = true))
-                messageSent++
-                if (messageSent >= 3) {
-                    showDialog = true
-                }
+        }
+        MessageSection { userMessage ->
+            // When the user sends a message, add it to the messages list
+            messageDummy.add(Message(text = userMessage, recipientId = "user", isOut = true))
 
-                // Check if the user's message is "Hi" and generate a response from the bot
-                if (userMessage.equals("Hi", ignoreCase = true)) {
-                    messageDummy.add(
-                        Message(
-                            text = "Hello! How can I assist you?",
-                            recipientId = "bot",
-                            isOut = false
-                        )
-                    )
-                } else {
-                    messageDummy.add(
-                        Message(
-                            text = "The question is not related to movies...Please ask again",
-                            recipientId = "bot",
-                            isOut = false
-                        )
-                    )
+            // Check if the user's message is "Hi" and generate a response from the bot
+            if (userMessage.equals("Hi", ignoreCase = true)) {
+                messageDummy.add(Message(text = "Hello! How can I assist you?", recipientId = "bot", isOut = false))
+            }else{
+                messageDummy.add(Message(text = "The question is not related to movies...Please ask again", recipientId = "bot", isOut = false))
 
-                }
             }
-
+        }
     }
-    if (showDialog) {
-        AlertDialog(
-            modifier = Modifier.size(250.dp),// Adjust the size as needed
-
-            onDismissRequest = {
-                // Dismiss the dialog and reset showDialog
-                showDialog = false
-            },
-            title = {
-                Text("LIMIT REACHED!!!")
-            },
-            text = {
-                Text("You've reached your free trial")
-            },
-            confirmButton = {
-                IconButton(
-                    modifier = Modifier.fillMaxWidth()
-                        .background(MaterialTheme.colorScheme.primary)
-                        , // Adjust the size as needed
-
-                    onClick = {
-                        // Perform any action you want when the dialog is confirmed
-                        navigateToPayment()
-                        showDialog = false
-
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.ArrowRight,
-                        contentDescription = "PAYMENT BUTTON"
-                    )
-                    Text("PROCEED TO PAYMENT", color = Color.White)
-                }
-            }
-        )
-    }
-
 }
 
 
@@ -263,8 +197,6 @@ fun ChatScreen(
 @Composable
 fun MessageSection(onUserMessageSent: (String) -> Unit) {
     val messageDummy = remember { mutableStateListOf<Message>() }
-    var messageSent = 0
-    var showDialog = false
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
@@ -285,47 +217,24 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
                         val userMessage = message.value
                         if (userMessage.isNotBlank()) {
                             // Add the user's message first
-                            messageDummy.add(
-                                Message(
-                                    text = userMessage,
-                                    recipientId = "user",
-                                    isOut = true
-                                )
-                            )
+                            messageDummy.add(Message(text = userMessage, recipientId = "user", isOut = true))
                             onUserMessageSent(userMessage)
-                            messageSent++
-                            if (messageSent >= 3) {
-                                showDialog = true
-                            }
 
                             // Check if the user's message is "Hi" and generate a response from the bot
                             if (userMessage.equals("Hi", ignoreCase = true)) {
                                 // Add the bot's response
-                                messageDummy.add(
-                                    Message(
-                                        text = "Hello! How can I assist you?",
-                                        recipientId = "bot",
-                                        isOut = false
-                                    )
-                                )
-                            } else {
-                                messageDummy.add(
-                                    Message(
-                                        text = "The question is not related to movies...Please ask again",
-                                        recipientId = "bot",
-                                        isOut = false
-                                    )
-                                )
-
+                                messageDummy.add(Message(text = "Hello! How can I assist you?", recipientId = "bot", isOut = false))
                             }
+                            else{
+                                messageDummy.add(Message(text = "The question is not related to movies...Please ask again", recipientId = "bot", isOut = false))
+
+                            } 
 
                             // Clear the message field
                             message.value = ""
                         }
 
-
                     }
-
                 )
             },
             modifier = Modifier
@@ -335,32 +244,7 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
 
 
     }
-    if (showDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                // Dismiss the dialog and reset showDialog
-                showDialog = false
-            },
-            title = {
-                Text("Alert")
-            },
-            text = {
-                Text("You've sent 3 or more messages!")
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        // Perform any action you want when the dialog is confirmed
-                        showDialog = false
-                    }
-                ) {
-                    Text("OK")
-                }
-            }
-        )
-    }
 }
-
 
 @Composable
 fun MessageItem(

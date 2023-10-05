@@ -312,6 +312,7 @@ fun LoginScreen(
                         }
                         when(uiState.loginSuccess){
                             true -> {
+                                loginScreenViewModel.resetState()
                                 navigateToChat()
                             }
                             false -> {
@@ -319,6 +320,7 @@ fun LoginScreen(
                                     CircularProgressIndicator()
                                 }else if (uiState.error != null){
                                     Toast.makeText(mContext, uiState.error, Toast.LENGTH_SHORT).show()
+                                    loginScreenViewModel.resetState()
                                 }
                             }
                         }

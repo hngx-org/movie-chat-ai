@@ -36,11 +36,13 @@ class LoginScreenViewModel @Inject constructor(
                     _uiState.value = LoginScreenState(loginSuccess = false)
                 }
             }
-
-
-            }
         }
     }
+    fun resetState(){
+        _uiState.value = LoginScreenState()
+    }
+}
+
 
     /*fun updateUserDetails(userDetails: UserLoginDetails){
         _uiState.value = LoginScreenState(userDetails = userDetails)
