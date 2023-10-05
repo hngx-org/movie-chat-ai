@@ -8,7 +8,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-@HiltViewModel
 class ChatScreenViewModel : ViewModel() {
     private val _chatState = MutableStateFlow(ChatScreenState())
     val chatState: MutableStateFlow<ChatScreenState> = _chatState

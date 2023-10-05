@@ -8,7 +8,6 @@ import com.shegs.hng_auth_library.network.ApiResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 
-@HiltViewModel
 class LogoutViewModel() : ViewModel()  {
     private val apiService = AuthLibrary.createAuthService()
     fun logOut (){
