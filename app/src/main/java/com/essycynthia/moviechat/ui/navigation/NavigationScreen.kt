@@ -26,6 +26,7 @@ import com.essycynthia.moviechat.ui.home_screens.ChatScreen
 import com.essycynthia.moviechat.ui.password_screens.ForgotPasswordScreen
 import com.essycynthia.moviechat.ui.login_screens.LoginScreen
 import com.essycynthia.moviechat.ui.password_screens.ResetPasswordScreen
+import com.essycynthia.moviechat.ui.payment_verification_screens.NewPaymentMethodScreen
 import com.essycynthia.moviechat.ui.register_screens.SignUpScreen
 import com.essycynthia.moviechat.ui.payment_verification_screens.PaymentMethodScreen
 import com.essycynthia.moviechat.ui.payment_verification_screens.VerificationColumn
@@ -99,7 +100,7 @@ fun MovieRecommenderApp(
             }
 
             composable(route = Payment.route){
-                PaymentMethodScreen()
+                NewPaymentMethodScreen()
             }
         }
     }
