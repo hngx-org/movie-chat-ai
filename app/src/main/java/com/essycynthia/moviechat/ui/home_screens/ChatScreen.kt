@@ -366,36 +366,12 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-             //   .border(width = 5.dp, color = Color(0xFF209AFD))
 
         )
 
 
     }
-   /* if (showDialog) {
-        AlertDialog(
-            onDismissRequest = {
-                // Dismiss the dialog and reset showDialog
-                showDialog = false
-            },
-            title = {
-                Text("Alert")
-            },
-            text = {
-                Text("You've sent 3 or more messages!")
-            },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        // Perform any action you want when the dialog is confirmed
-                        showDialog = false
-                    }
-                ) {
-                    Text("OK")
-                }
-            }
-        )
-    }*/
+
 }
 
 

@@ -29,6 +29,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -61,11 +63,17 @@ fun PaymentMethodScreen(){
             OutlinedTextField(
                 value = cardNumber,
                 onValueChange = { cardNumber = it },
-                label = {Text(text = "Card Number")},
-                placeholder = { Text(text = "1234 5678 9101 1123")},
+                label = {Text(text = "Card Number",
+                    //added font family
+                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                )},
+                //added font family
+                placeholder = { Text(text = "1234 5678 9101 1123",
+                    fontFamily = FontFamily(Font(R.font.poppinslight)))},
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                maxLines = 1
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -74,38 +82,56 @@ fun PaymentMethodScreen(){
                 OutlinedTextField(
                     value = date,
                     onValueChange = { if (it.length <= 8) date = it },
-                    label = {Text(text = "Date")},
-                    placeholder = { Text(text = "11/2000")},
+                    label = {Text(text = "Date",
+                        //added font family
+                        fontFamily = FontFamily(Font(R.font.poppinsemibold)))},
+                    //added font family
+                    placeholder = { Text(text = "11/2000",
+                        fontFamily = FontFamily(Font(R.font.poppinslight)))},
                     modifier = Modifier.weight(0.5F),
                     colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    maxLines = 1
                 )
                 OutlinedTextField(
                     value = ccv,
                     onValueChange = {ccv = it},
-                    label = {Text(text = "CCV")},
-                    placeholder = { Text(text = "123")},
+                    label = {Text(text = "CCV",
+                        fontFamily = FontFamily(Font(R.font.poppinsemibold)))},
+                    placeholder = { Text(text = "123",
+                        fontFamily = FontFamily(Font(R.font.poppinslight)))},
                     modifier = Modifier.weight(0.5F),
                     colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    maxLines = 1
                 )
             }
             OutlinedTextField(
                 value = name,
                 onValueChange = {name = it},
-                label = {Text(text = "Client")},
-                placeholder = { Text(text = "Franklin Okoli")},
+                label = {Text(text = "Client",
+                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                )},
+                placeholder = { Text(text = "Franklin Okoli",
+                    fontFamily = FontFamily(Font(R.font.poppinslight))
+                )},
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent)
+                colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                maxLines = 1
             )
             OutlinedTextField(
                 value = postCode,
                 onValueChange = {postCode = it},
-                label = {Text(text = "Postal Code")},
-                placeholder = { Text(text = "01000001")},
+                label = {Text(text = "Postal Code",
+                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                )},
+                placeholder = { Text(text = "01000001",
+                    fontFamily = FontFamily(Font(R.font.poppinslight)))},
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.textFieldColors(containerColor = Color.Transparent),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                maxLines = 1
             )
             Button(
                 onClick = { /*TODO*/ },
@@ -114,7 +140,8 @@ fun PaymentMethodScreen(){
                 modifier = Modifier.fillMaxWidth().height(50.dp),
 
             ) {
-                Text(text = "Make Payment")
+                Text(text = "Make Payment",
+                    fontFamily = FontFamily(Font(R.font.poppinsemibold)))
             }
         }
     }
