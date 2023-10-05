@@ -112,7 +112,7 @@ fun ChatScreen(
                 unselectedIcon = Icons.Outlined.Home,
             ),
             NavigationItem(
-                title = "Dark Mode",
+                title = "Theme",
                 selectedIcon = Icons.Filled.DarkMode,
                 unselectedIcon = Icons.Outlined.LightMode,
 
