@@ -2,6 +2,7 @@ package com.essycynthia.moviechat.ui.home_screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +30,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,6 +43,7 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -57,6 +60,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.essycynthia.moviechat.R
@@ -153,9 +158,15 @@ fun ChatScreen(
         },
         drawerState = drawerState
     ) {
-        Scaffold(modifier = Modifier.padding(16.dp),
+        Scaffold(
+            modifier = Modifier.background(Color.White)
         ) {
-            TopAppBar(title = { Text(text = stringResource(id = R.string.app_name)) },
+            CenterAlignedTopAppBar(title = { Text(text = stringResource(id = R.string.app_name),
+
+                //added font family
+                fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                , fontSize = 17.sp
+            ) },
                 navigationIcon = {
                     IconButton(onClick = { scope.launch { drawerState.open() } }) {
                         Icon(imageVector = Icons.Default.Menu, contentDescription = "Toggle drawer")
@@ -266,8 +277,14 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
     var messageSent = 0
     var showDialog = false
     Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 10.dp)
+        modifier = Modifier
+
+            .fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFD0E9FD)
+        )
+
+
     ) {
         OutlinedTextField(
             value = message.value,
@@ -275,13 +292,20 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
                 Text(text = "Send a message")
             },
             onValueChange = { message.value = it },
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                cursorColor = Color(0xFF209AFD),
+                containerColor = Color.White
+            ),
             shape = RoundedCornerShape(25.dp),
             trailingIcon = {
                 Icon(
                     imageVector = Icons.Outlined.Send,
                     contentDescription = "SEND",
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable {
+                    tint = Color(0xFF209AFD),
+                    modifier = Modifier
+                        .clickable {
                         val userMessage = message.value
                         if (userMessage.isNotBlank()) {
                             // Add the user's message first
@@ -331,6 +355,8 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
+             //   .border(width = 5.dp, color = Color(0xFF209AFD))
+
         )
 
 
@@ -378,13 +404,14 @@ fun MessageItem(
                 Box(
                     modifier = Modifier
                         .background(
-                            if (isOut) MaterialTheme.colorScheme.primary else Color(0xFFF9F6EE),
+                            if (isOut) Color(0xFF209AFD) else Color(0xFFF9F6EE),
                             shape = if (isOut) AuthorChatBubbleShape else BotChatBubbleShape
                         )
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     Text(
                         text = messageText,
+                        fontFamily = FontFamily(Font(R.font.poppinslight)),
                         color = if (isOut) Color.White
                         else Color.Black
                     )
@@ -394,6 +421,7 @@ fun MessageItem(
         }
         Text(
             text = time,
+            fontFamily = FontFamily(Font(R.font.poppinslight)),
             fontSize = 12.sp,
             modifier = Modifier.padding(start = 8.dp)
         )
