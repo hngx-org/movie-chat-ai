@@ -93,7 +93,8 @@ data class NavigationItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    navigateToPayment: () -> Unit
+    navigateToPayment: () -> Unit,
+    userId: String? = ""
 ) {
     val simpleDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
     val messageDummy = remember { mutableStateListOf<Message>() }

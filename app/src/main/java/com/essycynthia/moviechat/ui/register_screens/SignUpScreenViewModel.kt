@@ -45,8 +45,6 @@ class SignUpScreenViewModel @Inject constructor(@ApplicationContext context: Con
                     )
                 }
             }
-
-
         }
     }
 }

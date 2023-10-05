@@ -70,7 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.essycynthia.moviechat.R
-import com.essycynthia.moviechat.data.dto.requests.LoginRequest
+import com.shegs.hng_auth_library.model.LoginRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -79,7 +79,7 @@ import com.essycynthia.moviechat.data.dto.requests.LoginRequest
 fun LoginScreen(
     navigateToForgot: ()-> Unit,
     navigateToSignUp:()-> Unit,
-    navigateToChat:()-> Unit,
+    navigateWithUserId:(String)-> Unit,
     loginScreenViewModel: LoginScreenViewModel = hiltViewModel()
 ) {
     val uiState by loginScreenViewModel.uiState.collectAsState()
@@ -87,6 +87,7 @@ fun LoginScreen(
     var password by remember { mutableStateOf("") }
     var passwordVisible by remember { mutableStateOf(false) }
     val mContext = LocalContext.current
+    var notNavigated by remember{mutableStateOf(true)}
     Scaffold() {
         LazyColumn(
             modifier = Modifier
@@ -259,6 +260,12 @@ fun LoginScreen(
                         Button(
                             onClick = {
                                 loginScreenViewModel.loginUser(LoginRequest(email = email, password = password))
+                                /*while (notNavigated){
+                                    if (uiState.userId != null){
+                                        navigateWithUserId(uiState.userId!!)
+                                        notNavigated = false
+                                    }
+                                }*/
                             },
                             modifier = Modifier
                                 .align(Alignment.End)
@@ -312,13 +319,17 @@ fun LoginScreen(
                         }
                         when(uiState.loginSuccess){
                             true -> {
-                                navigateToChat()
+                                if (uiState.userId != null){
+                                    navigateWithUserId(uiState.userId!!)
+                                    loginScreenViewModel.resetState()
+                                }
                             }
                             false -> {
                                 if(uiState.isLoading){
                                     CircularProgressIndicator()
                                 }else if (uiState.error != null){
                                     Toast.makeText(mContext, uiState.error, Toast.LENGTH_SHORT).show()
+                                    loginScreenViewModel.resetState()
                                 }
                             }
                         }

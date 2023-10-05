@@ -11,8 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.essycynthia.moviechat.ui.home_screens.ChatScreen
+import com.essycynthia.moviechat.ui.navigation.ChatScreen
 import com.essycynthia.moviechat.ui.navigation.MovieRecommenderApp
-import com.essycynthia.moviechat.ui.navigation.NavigationRoutes
+import com.essycynthia.moviechat.ui.navigation.Payment
 import com.essycynthia.moviechat.ui.payment_verification_screens.PaymentMethodScreen
 import com.essycynthia.moviechat.ui.theme.MovieChatTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,14 +30,14 @@ class  MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = NavigationRoutes.CHAT_SCREEN.name){
-                        composable(NavigationRoutes.CHAT_SCREEN.name){
+                    NavHost(navController = navController, startDestination = ChatScreen.route){
+                        composable(ChatScreen.route){
                             ChatScreen (
-                                navigateToPayment = {navController.navigate(NavigationRoutes.PAYMENT.name)},
+                                navigateToPayment = {navController.navigate(Payment.route)},
                             )
 
                         }
-                        composable(NavigationRoutes.PAYMENT.name){
+                        composable(Payment.route){
                             PaymentMethodScreen()
                         }
                     }
