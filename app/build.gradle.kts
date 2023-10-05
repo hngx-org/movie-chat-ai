@@ -118,6 +118,10 @@ dependencies {
     //Authentication packaging
     implementation ("com.github.hngx-org:mirage-kotlin-auth-library:2.0.0")
 
+    //Open AI packaging
+    implementation("com.github.hngx-org:openai-api-library:0.1.3")
+
+
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -7,6 +7,7 @@ import com.essycynthia.moviechat.data.dto.responses.LoginResponse
 import com.essycynthia.moviechat.data.dto.responses.LogoutResponse
 import com.essycynthia.moviechat.data.dto.responses.RegisterResponse
 import com.essycynthia.moviechat.util.Resource
+import com.shegs.hng_auth_library.authlibrary.AuthLibrary
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
