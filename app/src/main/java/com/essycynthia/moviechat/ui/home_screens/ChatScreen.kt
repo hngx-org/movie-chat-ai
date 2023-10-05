@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,10 +21,12 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.Logout
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
@@ -36,6 +39,7 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -69,6 +73,7 @@ import androidx.navigation.NavBackStackEntry
 import com.essycynthia.moviechat.R
 import com.essycynthia.moviechat.data.Message
 import com.example.apilibrary.wrapperclass.OpenAiCaller
+import com.shegs.hng_auth_library.authlibrary.AuthLibrary
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -84,9 +89,9 @@ val BotChatBubbleShape: Shape = RoundedCornerShape(
 )
 
 data class NavigationItem(
-    val title: String,
-    val selectedIcon: ImageVector,
-    val unselectedIcon: ImageVector
+    var title: String,
+    var selectedIcon: ImageVector,
+    var unselectedIcon: ImageVector
 
 )
 
@@ -100,7 +105,10 @@ fun ChatScreen(
     navigateToPayment: () -> Unit,
     userId: String? = ""
 ) {
+
     val chatState by viewModel.chatState.collectAsState()
+     val apiService = AuthLibrary.createAuthService()
+    val logoutRepository = AuthLibrary.createLogoutRepository(apiService)
 
     val simpleDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
     val messageDummy = remember { mutableStateListOf<Message>() }
@@ -109,17 +117,15 @@ fun ChatScreen(
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
     }
-    BackHandler (enabled = false){
-
-    }
+   val coroutineScope = rememberCoroutineScope()
     var showDialog by remember { mutableStateOf(false) }
     var messageSent by remember { mutableStateOf(0) }
     val items = remember {
         mutableStateListOf<NavigationItem>(
             NavigationItem(
                 title = "All",
-                selectedIcon = Icons.Filled.Home,
-                unselectedIcon = Icons.Outlined.Home,
+                selectedIcon = Icons.Filled.Person,
+                unselectedIcon = Icons.Outlined.Person,
             ),
 
             NavigationItem(
@@ -162,7 +168,29 @@ fun ChatScreen(
                             },
                             selected = index == selectedItemIndex,
                             onClick = {
-//                                            navController.navigate(item.route)
+                                when (item.title) {
+                                    "All" -> {
+                                        // Handle the "All" item click
+                                        // Example: navController.navigate("all")
+                                    }
+                                    "DarkMode" -> {
+                                        item.title = if (isSystemInDarkTheme()) "Light Mode" else "Dark Mode"
+                                        item.selectedIcon = if (isSystemInDarkTheme())  Icons.Outlined.LightMode else Icons.Filled.DarkMode
+                                       item.unselectedIcon = if (isSystemInDarkTheme())  Icons.Filled.DarkMode else Icons.Outlined.LightMode
+                                    }
+                                    "Settings" -> {
+                                        // Handle the "Settings" item click
+                                        // Example: navController.navigate("settings")
+                                    }
+                                    "Logout" -> {
+                                        coroutineScope.launch {
+                                            logoutRepository.logout()
+                                        }
+
+                                    }
+                                    // Add more cases as needed for other items
+                                }
+
                                 selectedItemIndex = index
                                 scope.launch {
                                     drawerState.close()
