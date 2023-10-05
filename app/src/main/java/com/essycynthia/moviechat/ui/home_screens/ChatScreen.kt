@@ -18,10 +18,12 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.icons.outlined.Logout
 import androidx.compose.material.icons.outlined.Send
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.AlertDialog
@@ -53,6 +55,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Bottom
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -118,8 +121,9 @@ fun ChatScreen(
                 selectedIcon = Icons.Filled.Home,
                 unselectedIcon = Icons.Outlined.Home,
             ),
+
             NavigationItem(
-                title = "Theme",
+                title = "DarkMode",
                 selectedIcon = Icons.Filled.DarkMode,
                 unselectedIcon = Icons.Outlined.LightMode,
 
@@ -129,45 +133,67 @@ fun ChatScreen(
                 selectedIcon = Icons.Filled.Settings,
                 unselectedIcon = Icons.Outlined.Settings,
             ),
+            NavigationItem(
+                title = "Logout",
+                selectedIcon = Icons.Filled.Logout,
+                unselectedIcon = Icons.Outlined.Logout,
+            ),
+
         )
     }
 
     ModalNavigationDrawer(
-        drawerContent = {
-            ModalDrawerSheet {
-                Spacer(modifier = Modifier.height(16.dp))
-                items.forEachIndexed { index, item ->
-                    NavigationDrawerItem(
-                        label = {
-                            Text(text = item.title)
-                        },
-                        selected = index == selectedItemIndex,
-                        onClick = {
-//                                            navController.navigate(item.route)
-                            selectedItemIndex = index
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        },
-                        icon = {
-                            Icon(
-                                imageVector = if (index == selectedItemIndex) {
-                                    item.selectedIcon
-                                } else item.unselectedIcon,
-                                contentDescription = item.title
-                            )
-                        },
+     //   modifier = Modifier.
 
-                        modifier = Modifier
-                            .padding(NavigationDrawerItemDefaults.ItemPadding)
-                    )
+
+        drawerContent = {
+
+
+
+                ModalDrawerSheet {
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+
+
+                    items.forEachIndexed { index, item ->
+                        NavigationDrawerItem(
+                            label = {
+                                Text(text = item.title)
+                            },
+                            selected = index == selectedItemIndex,
+                            onClick = {
+//                                            navController.navigate(item.route)
+                                selectedItemIndex = index
+                                scope.launch {
+                                    drawerState.close()
+                                }
+                            },
+                            icon = {
+                                Icon(
+                                    imageVector = if (index == selectedItemIndex) {
+                                        item.selectedIcon
+                                    } else item.unselectedIcon,
+                                    contentDescription = item.title
+                                )
+                            },
+
+
+
+                            modifier = Modifier
+
+                                .padding(NavigationDrawerItemDefaults.ItemPadding),
+
+
+
+                            )
+                    }
                 }
-            }
+
         },
         drawerState = drawerState
     ) {
         Scaffold(
-            modifier = Modifier.background(Color.White)
+            modifier = Modifier.background(MaterialTheme.colorScheme.secondary)
         ) {
             CenterAlignedTopAppBar(title = {
                 Text(
