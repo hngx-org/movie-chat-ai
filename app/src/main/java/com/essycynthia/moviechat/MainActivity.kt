@@ -29,20 +29,20 @@ class  MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
-                    NavHost(navController = navController, startDestination = ChatScreen.route){
-                        composable(ChatScreen.route){
-                            ChatScreen (
-                                navigateToPayment = {navController.navigate(Payment.route)},
-                            )
+//                    val navController = rememberNavController()
+//                    NavHost(navController = navController, startDestination = ChatScreen.route){
+//                        composable(ChatScreen.route){
+//                            ChatScreen (
+//                                navigateToPayment = {navController.navigate(Payment.route)},
+//                            )
+//
+//                        }
+//                        composable(Payment.route){
+//                            PaymentMethodScreen()
+//                        }
+//                    }
 
-                        }
-                        composable(Payment.route){
-                            PaymentMethodScreen()
-                        }
-                    }
-
-//                    MovieRecommenderApp()
+                    MovieRecommenderApp()
                   //  SignUpScreen()
                     //LoginScreen()
                    // ResetPasswordScreen()

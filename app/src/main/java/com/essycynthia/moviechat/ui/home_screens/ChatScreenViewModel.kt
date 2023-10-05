@@ -3,6 +3,7 @@ package com.essycynthia.moviechat.ui.home_screens
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.essycynthia.moviechat.ui.register_screens.SignUpScreenState
+import com.essycynthia.moviechat.util.Resource
 import com.example.apilibrary.wrapperclass.OpenAiCaller
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,7 @@ class ChatScreenViewModel : ViewModel() {
                     val response = OpenAiCaller.generateChatResponse(userPrompt, userId)
 
                     // Update the bot response and user prompt
+
                     _chatState.value = _chatState.value.copy(
                         botResponse = response,
                         userPrompt = userPrompt,
@@ -49,6 +51,7 @@ class ChatScreenViewModel : ViewModel() {
                 error = null // Clear any previous error message
             )
         }
+
     }
     private fun isMovieOrSeriesQuestion(question: String): Boolean {
         // Implement your logic to determine if the question is related to movies or series

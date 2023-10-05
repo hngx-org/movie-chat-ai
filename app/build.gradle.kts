@@ -1,10 +1,9 @@
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
     id("dagger.hilt.android.plugin")
-    id ("kotlin-parcelize")
+    id("kotlin-parcelize")
 
 }
 
@@ -65,16 +64,15 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
-    implementation ("androidx.navigation:navigation-compose:2.5.3")
+    implementation("androidx.navigation:navigation-compose:2.5.3")
     implementation("androidx.compose.material3:material3:1.1.2")
-
 
 
     //Serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
 
     //Parcelize
-    implementation ("org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.8.20")
+    implementation("org.jetbrains.kotlin:kotlin-android-extensions-runtime:1.8.20")
 
 //Compose dependencies
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha07")
@@ -86,7 +84,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.1")
 
     // Glide
-    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
 
     //Coil
     implementation("io.coil-kt:coil-compose:2.4.0")
@@ -103,7 +101,7 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 
     //Timber
-    implementation ("com.jakewharton.timber:timber:5.0.1")
+    implementation("com.jakewharton.timber:timber:5.0.1")
 
 
     // Retrofit
@@ -116,8 +114,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.2.0")
 
     //Authentication packaging
-    implementation ("com.github.hngx-org:mirage-kotlin-auth-library:2.0.0")
-
+    implementation("com.github.hngx-org:mirage-kotlin-auth-library:3.0.0")
     //Open AI packaging
     implementation("com.github.hngx-org:openai-api-library:0.1.3")
 
@@ -132,7 +129,7 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //password toggle(Nickyshe)
-    implementation ("androidx.compose.material:material-icons-extended:1.3.1")
+    implementation("androidx.compose.material:material-icons-extended:1.3.1")
 }
 kapt {
     correctErrorTypes = true

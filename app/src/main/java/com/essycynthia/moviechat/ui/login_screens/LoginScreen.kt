@@ -70,6 +70,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.essycynthia.moviechat.R
+import com.essycynthia.moviechat.domain.AppPreferences
 import com.shegs.hng_auth_library.model.LoginRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -320,6 +321,7 @@ fun LoginScreen(
                         when(uiState.loginSuccess){
                             true -> {
                                 if (uiState.userId != null){
+                                    AppPreferences(mContext).setLoggedIn(true)
                                     navigateWithUserId(uiState.userId!!)
                                     loginScreenViewModel.resetState()
                                 }

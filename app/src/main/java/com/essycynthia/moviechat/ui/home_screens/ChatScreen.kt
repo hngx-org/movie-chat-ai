@@ -1,8 +1,8 @@
 package com.essycynthia.moviechat.ui.home_screens
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,7 +34,6 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
@@ -45,9 +42,9 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,8 +62,10 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavBackStackEntry
 import com.essycynthia.moviechat.R
 import com.essycynthia.moviechat.data.Message
+import com.example.apilibrary.wrapperclass.OpenAiCaller
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -88,6 +87,8 @@ data class NavigationItem(
 
 )
 
+val viewModel = ChatScreenViewModel()
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,12 +97,17 @@ fun ChatScreen(
     navigateToPayment: () -> Unit,
     userId: String? = ""
 ) {
+    val chatState by viewModel.chatState.collectAsState()
+
     val simpleDateFormat = SimpleDateFormat("h:mm a", Locale.ENGLISH)
     val messageDummy = remember { mutableStateListOf<Message>() }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var selectedItemIndex by rememberSaveable {
         mutableStateOf(0)
+    }
+    BackHandler (enabled = false){
+
     }
     var showDialog by remember { mutableStateOf(false) }
     var messageSent by remember { mutableStateOf(0) }
@@ -163,12 +169,14 @@ fun ChatScreen(
         Scaffold(
             modifier = Modifier.background(Color.White)
         ) {
-            CenterAlignedTopAppBar(title = { Text(text = stringResource(id = R.string.app_name),
+            CenterAlignedTopAppBar(title = {
+                Text(
+                    text = stringResource(id = R.string.app_name),
 
-                //added font family
-                fontFamily = FontFamily(Font(R.font.poppinsemibold))
-                , fontSize = 17.sp
-            ) },
+                    //added font family
+                    fontFamily = FontFamily(Font(R.font.poppinsemibold)), fontSize = 17.sp
+                )
+            },
                 navigationIcon = {
                     IconButton(onClick = { scope.launch { drawerState.open() } }) {
                         Icon(imageVector = Icons.Default.Menu, contentDescription = "Toggle drawer")
@@ -187,56 +195,73 @@ fun ChatScreen(
     Column {
         Spacer(modifier = Modifier.height(48.dp)) // Add some spacing at the top
         LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                //            reverseLayout = true
-            ) {
-                items(messageDummy) { chat ->
-                    MessageItem(
-                        messageText = chat.text,
-                        time = simpleDateFormat.format(chat.time),
-                        isOut = chat.isOut
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-                }
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .padding(16.dp)
+            //            reverseLayout = true
+        ) {
+            items(messageDummy) { chat ->
+                MessageItem(
+                    messageText = chat.text,
+                    time = simpleDateFormat.format(chat.time),
+                    isOut = chat.isOut
+                )
+                Spacer(modifier = Modifier.height(8.dp))
             }
-            MessageSection { userMessage ->
-                // When the user sends a message, add it to the messages list
+        }
+        val coroutine = rememberCoroutineScope()
+
+        MessageSection({ userMessage ->
+            // When the user sends a message, add it to the messages list
+            coroutine.launch {
+                val botResponse = OpenAiCaller.generateChatResponse(userMessage, userId!!)
                 messageDummy.add(Message(text = userMessage, recipientId = "user", isOut = true))
                 messageSent++
                 if (messageSent >= 3) {
                     showDialog = true
                 }
 
-                // Check if the user's message is "Hi" and generate a response from the bot
-                if (userMessage.equals("Hi", ignoreCase = true)) {
-                    messageDummy.add(
-                        Message(
-                            text = "Hello! How can I assist you?",
-                            recipientId = "bot",
-                            isOut = false
-                        )
-                    )
-                } else {
-                    messageDummy.add(
-                        Message(
-                            text = "The question is not related to movies...Please ask again",
-                            recipientId = "bot",
-                            isOut = false
-                        )
-                    )
 
+                if (chatState.botResponse != null) {
+                    // You can use botResponse in your UI, e.g., display it in a Text composable
+                    messageDummy.add(Message(text = botResponse, recipientId = "bot", isOut = false))
+                } else {
+                    // Handle the case where there is no bot response or it's blank
+                    // You might display a placeholder or loading indicator here
+                    chatState.error
                 }
             }
+
+
+//            // Check if the user's message is "Hi" and generate a response from the bot
+//            if (userMessage.equals("Hi", ignoreCase = true)) {
+//                messageDummy.add(
+//                    Message(
+//                        text = "Hello! How can I assist you?",
+//                        recipientId = "bot",
+//                        isOut = false
+//                    )
+//                )
+//            } else {
+//                messageDummy.add(
+//                    Message(
+//                        text = "The question is not related to movies...Please ask again",
+//                        recipientId = "bot",
+//                        isOut = false
+//                    )
+//                )
+//
+//            }
+
+        }, userId = userId)
 
     }
     if (showDialog) {
         AlertDialog(
             //modifier = Modifier
-               //.background(Color.White)
-                ///.size(250.dp), // Adjust the size as needed
+            //.background(Color.White)
+            ///.size(250.dp), // Adjust the size as needed
 
             onDismissRequest = {
                 // Dismiss the dialog and reset showDialog
@@ -244,18 +269,21 @@ fun ChatScreen(
             },
 
             title = {
-                Text("LIMIT REACHED!!!",
+                Text(
+                    "LIMIT REACHED!!!",
                     fontFamily = FontFamily(Font(R.font.poppinsemibold))
-                    )
+                )
             },
             text = {
-                Text("You've reached your free trial",
-                    fontFamily = FontFamily(Font(R.font.poppinslight)))
+                Text(
+                    "You've reached your free trial",
+                    fontFamily = FontFamily(Font(R.font.poppinslight))
+                )
             },
             confirmButton = {
                 Button(
                     modifier = Modifier.fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(Color(0xFF209AFD)),
+                    colors = ButtonDefaults.buttonColors(Color(0xFF209AFD)),
                     shape = RoundedCornerShape(10.dp),
 
                     // Adjust the size as needed
@@ -263,17 +291,19 @@ fun ChatScreen(
                         // Perform any action you want when the dialog is confirmed
                         navigateToPayment()
                         showDialog = false
-                              },
+                    },
 
-                ) {
+                    ) {
                     Icon(
                         imageVector = Icons.Default.ArrowRight,
                         contentDescription = "PAYMENT BUTTON"
                     )
-                    Text("PROCEED TO PAYMENT",
+                    Text(
+                        "PROCEED TO PAYMENT",
                         modifier = Modifier.fillMaxWidth(),
                         fontFamily = FontFamily(Font(R.font.poppinsemibold)),
-                        color = Color.White)
+                        color = Color.White
+                    )
                 }
             }
         )
@@ -284,10 +314,11 @@ fun ChatScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MessageSection(onUserMessageSent: (String) -> Unit) {
+fun MessageSection(onUserMessageSent: (String) -> Unit, userId: String?) {
     val messageDummy = remember { mutableStateListOf<Message>() }
     var messageSent = 0
-    var showDialog = false
+    val chatState by viewModel.chatState.collectAsState()
+
     Card(
         modifier = Modifier
 
@@ -318,49 +349,26 @@ fun MessageSection(onUserMessageSent: (String) -> Unit) {
                     tint = Color(0xFF209AFD),
                     modifier = Modifier
                         .clickable {
-                        val userMessage = message.value
-                        if (userMessage.isNotBlank()) {
-                            // Add the user's message first
-                            messageDummy.add(
-                                Message(
-                                    text = userMessage,
-                                    recipientId = "user",
-                                    isOut = true
-                                )
-                            )
-                            onUserMessageSent(userMessage)
-                            messageSent++
-                            if (messageSent >= 3) {
-                                showDialog = true
-                            }
-
-                            // Check if the user's message is "Hi" and generate a response from the bot
-                            if (userMessage.equals("Hi", ignoreCase = true)) {
-                                // Add the bot's response
+                            val userMessage = message.value
+                            if (userMessage.isNotBlank()) {
+                                // Add the user's message first
+                                viewModel.getChats(userMessage, userId!!)
                                 messageDummy.add(
                                     Message(
-                                        text = "Hello! How can I assist you?",
-                                        recipientId = "bot",
-                                        isOut = false
+                                        text = userMessage,
+                                        recipientId = "user",
+                                        isOut = true
                                     )
                                 )
-                            } else {
-                                messageDummy.add(
-                                    Message(
-                                        text = "The question is not related to movies...Please ask again",
-                                        recipientId = "bot",
-                                        isOut = false
-                                    )
-                                )
+                                onUserMessageSent(userMessage)
+                                messageSent++
 
+                                // Clear the message field
+                                message.value = ""
                             }
 
-                            // Clear the message field
-                            message.value = ""
+
                         }
-
-
-                    }
 
                 )
             },
