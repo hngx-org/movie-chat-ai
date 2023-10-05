@@ -13,7 +13,6 @@ import androidx.navigation.compose.rememberNavController
 import com.essycynthia.moviechat.ui.home_screens.ChatScreen
 import com.essycynthia.moviechat.ui.navigation.ChatScreen
 import com.essycynthia.moviechat.ui.navigation.MovieRecommenderApp
-import com.essycynthia.moviechat.ui.navigation.NavigationRoutes
 import com.essycynthia.moviechat.ui.navigation.Payment
 import com.essycynthia.moviechat.ui.payment_verification_screens.PaymentMethodScreen
 import com.essycynthia.moviechat.ui.theme.MovieChatTheme
