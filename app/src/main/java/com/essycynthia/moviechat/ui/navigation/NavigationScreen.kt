@@ -50,16 +50,16 @@ fun MovieRecommenderApp(
 
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
-    val currentScreen = movieAppScreens.find { it.route == currentDestination?.route }?: Login
-    Scaffold(
+ //   val currentScreen = movieAppScreens.find { it.route == currentDestination?.route }?: Login
+    /*Scaffold(
         topBar = {
             MovieRecommenderTopAppBar(currentScreen = currentScreen) { navController.navigateUp() }
         }
-    ) {innerPadding ->
+    ) {innerPadding ->*/
         NavHost(
             navController = navController,
             startDestination = Login.route,
-            modifier = Modifier.padding(innerPadding)
+            //modifier = Modifier.padding(innerPadding)
         ){
             composable(route = Login.route){
                 LoginScreen(
@@ -105,7 +105,7 @@ fun MovieRecommenderApp(
             }
         }
     }
-}
+//}
 
 fun NavHostController.navigateSingleTopTo(route: String) = this.navigate(route){launchSingleTop = true}
 
