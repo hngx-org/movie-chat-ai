@@ -28,7 +28,7 @@ class SignUpScreenViewModel @Inject constructor(@ApplicationContext context: Con
     fun signup(signupRequest: SignupRequest) {
         viewModelScope.launch(Dispatchers.IO) {
             val signupRepository = AuthLibrary.createSignupRepository(apiService)
-
+            _userSignUpState.value = SignUpScreenState(isLoading = true)
             val result: ApiResponse<AuthResponse> = signupRepository.signup(signupRequest)
             when (result) {
                 is ApiResponse.Success -> {

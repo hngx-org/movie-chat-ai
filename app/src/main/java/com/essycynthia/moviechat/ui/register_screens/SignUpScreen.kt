@@ -2,6 +2,7 @@ package com.essycynthia.moviechat.ui.register_screens
 
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
@@ -53,6 +54,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -64,7 +66,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.essycynthia.moviechat.R
-import com.essycynthia.moviechat.data.dto.requests.RegisterRequest
 import com.shegs.hng_auth_library.model.SignupRequest
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,7 +84,7 @@ fun SignUpScreen(
     var passwordVisible by remember { mutableStateOf(false) }
     var signUpName by remember { mutableStateOf("") }
     var sigUpConfirmPassword by remember { mutableStateOf("") }
-
+    val mContext = LocalContext.current
     val state = viewModel.userSignUpState.collectAsState()
 
 
@@ -360,19 +361,68 @@ fun SignUpScreen(
 
                         Spacer(modifier = Modifier.height(30.dp))
 
+                        val passwordRegex = Regex("[A-Za-z0-9]+")
                         Button(
                             onClick = {
+                                if (signUpEmail.isEmpty() || signUpPassword.isEmpty() || signUpName.isEmpty() || sigUpConfirmPassword.isEmpty()) {
+                                    Toast.makeText(
+                                        mContext,
+                                        "Please fill all the fields",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
+                                } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(signUpEmail)
+                                        .matches()
+                                ) {
+                                    Toast.makeText(
+                                        mContext,
+                                        "Provide a valid email address!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
-                                val registerRequest = SignupRequest(
-                                    password = signUpPassword,
-                                    email = signUpEmail,
-                                    name = signUpName,
-                                    confirm_password = sigUpConfirmPassword
-                                )
+                                }
+                                else if (signUpPassword.length<8)
+                                 {
+                                    Toast.makeText(
+                                        mContext,
+                                        "Password should have a minimum of 8 characters",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
-                                viewModel.signup(registerRequest)
+                                }
+                                else if (signUpPassword != sigUpConfirmPassword) {
+                                    Toast.makeText(
+                                        mContext,
+                                        "Password and confirm password does not match",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
 
+                                }
+                              else  if (!passwordRegex.matches(signUpPassword)) {
+                                    // Password contains special characters
+                                    Toast.makeText(
+                                        mContext,
+                                        "Password should not contains special characters",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else if (!passwordRegex.matches(sigUpConfirmPassword)) {
+                                    // Confirm password contains special characters
+                                    Toast.makeText(
+                                        mContext,
+                                        "Confirm password contains special characters",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                else {
+                                    val registerRequest = SignupRequest(
+                                        password = signUpPassword,
+                                        email = signUpEmail,
+                                        name = signUpName,
+                                        confirm_password = sigUpConfirmPassword
+                                    )
+
+                                    viewModel.signup(registerRequest)
+                                }
 
                             },
 
@@ -397,11 +447,10 @@ fun SignUpScreen(
                             CircularProgressIndicator()
                         } else if (state.value.success != null) {
                             navigateToChat()
-                        }
-
-//                        else if (state.value.success != null) {
+                        } else if (state.value.success == null) {
 //
-//                        }
+
+                        }
 
                     }
                 }
