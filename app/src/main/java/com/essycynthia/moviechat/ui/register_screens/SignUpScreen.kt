@@ -202,13 +202,13 @@ fun SignUpScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = MaterialTheme.colorScheme.primary,
+                                cursorColor = Color(0xFF209AFD),
                                 containerColor = Color.White
                             ),
                             leadingIcon = {
                                 Icon(
                                     imageVector = Icons.Default.Email,
-                                    contentDescription = "email",
+                                    contentDescription = "name",
                                     modifier = Modifier.size(20.dp)
                                 )
 
@@ -218,13 +218,16 @@ fun SignUpScreen(
                                 imeAction = ImeAction.Done
                             ),
                             placeholder = {
-                                Text(
-                                    text = "Enter your Email",
+                                Text(text = "Enter your email",
                                     fontSize = 15.sp,
-                                    fontFamily = FontFamily(Font(R.font.poppinsemibold)),
-                                    color = MaterialTheme.colorScheme.onPrimary
+                                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                                    )
 
-                                )
+                             /*   Text(
+                                    text = "Enter your email,
+                                    fontSize = 15.sp,
+                                    fontFamily = FontFamily(Font(R.font.poppinsemibold))
+                                )*/
                             }
 
 
@@ -242,13 +245,14 @@ fun SignUpScreen(
                                 .width(300.dp)
                                 .height(53.dp),
                             shape = RoundedCornerShape(18.dp),
+
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = MaterialTheme.colorScheme.primary,
-                                containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                                cursorColor = Color(0xFF209AFD),
+                                containerColor = Color.White
+                            ),
 
-                                ),
 
                             visualTransformation = if (passwordVisible) VisualTransformation.None else
                                 PasswordVisualTransformation(),
@@ -307,8 +311,9 @@ fun SignUpScreen(
                             colors = TextFieldDefaults.textFieldColors(
                                 focusedIndicatorColor = Color.Transparent,
                                 unfocusedIndicatorColor = Color.Transparent,
-                                cursorColor = MaterialTheme.colorScheme.primary,
-                                containerColor = if (isSystemInDarkTheme()) Color.White else Color.Black,
+                                cursorColor = Color(0xFF209AFD),
+                                containerColor = Color.White
+
                             ),
                             visualTransformation = if (passwordVisible) VisualTransformation.None else
                                 PasswordVisualTransformation(),

@@ -100,7 +100,8 @@ fun MovieRecommenderApp(
             }
 
             composable(route = Payment.route){
-                NewPaymentMethodScreen()
+                PaymentMethodScreen()
+               // NewPaymentMethodScreen()
             }
         }
     }

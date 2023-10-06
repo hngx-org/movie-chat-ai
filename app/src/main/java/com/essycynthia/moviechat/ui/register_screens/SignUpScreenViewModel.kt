@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.essycynthia.moviechat.data.dto.requests.RegisterRequest
 import com.essycynthia.moviechat.domain.repository.MovieRepository
+import com.essycynthia.moviechat.ui.login_screens.LoginScreenState
 import com.essycynthia.moviechat.util.Resource
 import com.shegs.hng_auth_library.authlibrary.AuthLibrary
 import com.shegs.hng_auth_library.model.AuthResponse
@@ -22,7 +23,7 @@ import javax.inject.Inject
 class SignUpScreenViewModel @Inject constructor(@ApplicationContext context: Context): ViewModel() {
     private val apiService = AuthLibrary.createAuthService()
 
-        private val _userSignUpState = MutableStateFlow(SignUpScreenState())
+        private var _userSignUpState = MutableStateFlow(SignUpScreenState())
     val userSignUpState: MutableStateFlow<SignUpScreenState> = _userSignUpState
     fun signup(signupRequest: SignupRequest) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -47,6 +48,9 @@ class SignUpScreenViewModel @Inject constructor(@ApplicationContext context: Con
             }
         }
     }
+
+
 }
+
 
 
