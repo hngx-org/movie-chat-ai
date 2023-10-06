@@ -381,7 +381,7 @@ fun SignUpScreen(
                                     ).show()
 
                                 }
-                                else if (!signUpPassword>=8)
+                                else if (signUpPassword.length<8)
                                  {
                                     Toast.makeText(
                                         mContext,
