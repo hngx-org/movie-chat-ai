@@ -236,7 +236,7 @@ fun ChatScreen(
     }
 
     Column {
-        Spacer(modifier = Modifier.height(48.dp)) // Add some spacing at the top
+       Spacer(modifier = Modifier.height(48.dp)) // Add some spacing at the top
         LazyColumn(
             modifier = Modifier
                 .weight(1f)
