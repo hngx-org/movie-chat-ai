@@ -160,16 +160,12 @@ fun ChatScreen(
     }
 
     ModalNavigationDrawer(
-        //   modifier = Modifier.
-
 
         drawerContent = {
-
 
             ModalDrawerSheet {
 
                 Spacer(modifier = Modifier.height(16.dp))
-
 
                 items.forEachIndexed { index, item ->
                     NavigationDrawerItem(
@@ -178,7 +174,7 @@ fun ChatScreen(
                         },
                         selected = index == selectedItemIndex,
                         onClick = {
-//                                            navController.navigate(item.route)
+                            item.clickable
                             selectedItemIndex = index
                             scope.launch {
                                 drawerState.close()
@@ -192,14 +188,9 @@ fun ChatScreen(
                                 contentDescription = item.title
                             )
                         },
-
-
                         modifier = Modifier
-
-                            .padding(NavigationDrawerItemDefaults.ItemPadding),
-
-
-                        )
+                            .padding(NavigationDrawerItemDefaults.ItemPadding)
+                    )
                 }
             }
 
