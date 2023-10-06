@@ -260,13 +260,26 @@ fun LoginScreen(
                         Spacer(modifier = Modifier.height(10.dp))
                         Button(
                             onClick = {
-                                loginScreenViewModel.loginUser(LoginRequest(email = email, password = password))
-                                /*while (notNavigated){
-                                    if (uiState.userId != null){
-                                        navigateWithUserId(uiState.userId!!)
-                                        notNavigated = false
-                                    }
-                                }*/
+                                if (email.isEmpty() || password.isEmpty()){
+                                    Toast.makeText(
+                                        mContext,
+                                        "Please fill all the fields",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email)
+                                        .matches()
+                                ) {
+                                    Toast.makeText(
+                                        mContext,
+                                        "Provide a valid email address!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+
+                                } else {
+                                    loginScreenViewModel.loginUser(LoginRequest(email = email, password = password))
+                                }
+
                             },
                             modifier = Modifier
                                 .align(Alignment.End)
